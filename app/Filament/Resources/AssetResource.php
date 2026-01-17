@@ -11,11 +11,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-// Import Wajib 1: Library QR Code
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-// Import Wajib 2: Helper untuk menampilkan HTML/Gambar
-use Illuminate\Support\HtmlString;
+use Illuminate\Database\Eloquent\SoftDeletingScope; // Import Penting untuk Soft Delete
+use SimpleSoftwareIO\QrCode\Facades\QrCode; // Import QR Code
+use Illuminate\Support\HtmlString; // Import HTML String
 
 class AssetResource extends Resource
 {
@@ -31,16 +29,19 @@ class AssetResource extends Resource
     {
         return $form
             ->schema([
-            // --- INI UNTUK INPUT FOTO (Di dalam FORM) ---
-            Forms\Components\FileUpload::make('foto')
-                ->label('Foto Barang Fisik')
-                ->image()
-                ->disk('public') // Simpan di folder public
-                ->directory('aset-images') // Masuk folder aset-images
-                ->visibility('public')
-                ->columnSpanFull(), // Agar lebar formnya penuh
-            // 1. Input Ruangan (Dropdown Relasi)
-            Forms\Components\Select::make('room_id')
+                // --- BAGIAN 1: UPLOAD FOTO ---
+                Forms\Components\FileUpload::make('foto')
+                    ->label('Foto Barang Fisik')
+                    ->image()
+                    ->imageEditor()
+                    ->disk('public')
+                    ->directory('aset-images')
+                    ->visibility('public')
+                    ->columnSpanFull(),
+
+                // --- BAGIAN 2: DATA UTAMA ---
+                // 1. Input Ruangan (Dropdown Relasi)
+                Forms\Components\Select::make('room_id')
                     ->relationship('room', 'nama_ruangan')
                     ->label('Lokasi Ruangan')
                     ->searchable()
@@ -76,37 +77,32 @@ class AssetResource extends Resource
                     ->required()
                     ->numeric()
                     ->prefix('Rp'),
-            // Tambahkan komponen FileUpload
-            Forms\Components\FileUpload::make('foto')
-                ->label('Foto Barang Fisik')
-                ->image() // Validasi harus file gambar
-                ->imageEditor() // Fitur keren: Bisa crop/rotate foto langsung di web
-                ->directory('aset-images') // Simpan di folder khusus
-                ->columnSpanFull(), // Agar kotaknya lebar penuh
-        ]);
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                // 1. Foto Thumbnail
+                Tables\Columns\ImageColumn::make('foto')
+                    ->label('Fisik')
+                    ->circular()
+                    ->defaultImageUrl(url('/images/placeholder.png')),
 
-            // --- INI UNTUK MENAMPILKAN FOTO (Di dalam TABLE) ---
-            Tables\Columns\ImageColumn::make('foto')
-                ->label('Fisik')
-                ->circular() // Biar bulat
-                ->defaultImageUrl(url('/images/placeholder.png')), // Gambar default jika kosong
-            // Kolom NUP
-            Tables\Columns\TextColumn::make('nup')
+                // 2. NUP
+                Tables\Columns\TextColumn::make('nup')
                     ->label('NUP')
                     ->sortable(),
 
-                // === KOLOM QR CODE (VERSI ANTI-GAGAL) ===
+                // 3. QR Code Generator (SVG Base64)
                 Tables\Columns\TextColumn::make('qr_code')
                     ->label('QR Scan')
                     ->html()
                     ->getStateUsing(function ($record) {
-                        // 1. Generate SVG Code
+                        // Generate QR Code saat runtime
+                        if (!$record->kode_barang || !$record->nup) return '-';
+
                         $svg = QrCode::format('svg')
                             ->size(50)
                             ->color(0, 0, 0)
@@ -114,77 +110,96 @@ class AssetResource extends Resource
                             ->margin(1)
                             ->generate($record->kode_barang . '-' . $record->nup);
 
-                        // 2. Ubah jadi Base64 String (Agar dianggap gambar oleh browser)
                         $base64 = base64_encode($svg);
 
-                        // 3. Return sebagai tag IMG dengan background putih paksa
                         return new HtmlString('
-                            <img src="data:image/svg+xml;base64,' . $base64 . '"
-                                 alt="QR"
+                            <img src="data:image/svg+xml;base64,' . $base64 . '" 
+                                 alt="QR" 
                                  style="background-color: white; padding: 2px; border-radius: 4px;"
-                                 width="50"
-                                 height="50"
+                                 width="50" 
+                                 height="50" 
                             />
                         ');
                     }),
-                // ========================================
 
-                // Kolom Kode & Nama
+                // 4. Data Barang
                 Tables\Columns\TextColumn::make('kode_barang')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true), // Sembunyi default biar rapi
+
                 Tables\Columns\TextColumn::make('nama_barang')
                     ->searchable()
                     ->weight('bold'),
 
-                // Kolom Lokasi (Relasi ke Rooms)
+                // 5. Lokasi
                 Tables\Columns\TextColumn::make('room.nama_ruangan')
                     ->label('Lokasi')
                     ->sortable()
                     ->searchable(),
 
-                // Kolom Kondisi (Badge Warna-warni)
+                // 6. Kondisi Badge
                 Tables\Columns\TextColumn::make('kondisi')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
-                        'BAIK' => 'success',        // Hijau
-                        'RUSAK_RINGAN' => 'warning', // Kuning
-                        'RUSAK_BERAT' => 'danger',   // Merah
+                        'BAIK' => 'success',
+                        'RUSAK_RINGAN' => 'warning',
+                        'RUSAK_BERAT' => 'danger',
                     }),
 
-                // Kolom Harga (Format IDR)
+                // 7. Harga
                 Tables\Columns\TextColumn::make('harga_perolehan')
                     ->money('IDR')
                     ->label('Harga'),
             ])
             ->filters([
-                //
+                // FILTER 1: SAMPAL (TRASHED)
+                // Filter ini memungkinkan kita melihat barang yang sudah dihapus (soft delete)
+                Tables\Filters\TrashedFilter::make(),
+
+                // FILTER 2: Kondisi
+                Tables\Filters\SelectFilter::make('kondisi')
+                    ->options([
+                        'BAIK' => 'Baik',
+                        'RUSAK_RINGAN' => 'Rusak Ringan',
+                        'RUSAK_BERAT' => 'Rusak Berat',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+
+                // ACTION HAPUS (Soft Delete)
                 Tables\Actions\DeleteAction::make(),
+
+                // ACTION RESTORE (Muncul hanya jika barang ada di sampah)
+                Tables\Actions\RestoreAction::make(),
+
+                // ACTION FORCE DELETE (Hapus Permanen)
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
 
-                    // 1. ACTION CETAK USULAN (PDF)
+                    // 1. BULK CETAK USULAN
                     Tables\Actions\BulkAction::make('cetak_usulan')
                         ->label('Cetak Usulan Penghapusan')
                         ->icon('heroicon-o-printer')
                         ->color('warning')
                         ->action(function ($records) {
-                            // Ambil ID barang yang dicentang
                             $ids = $records->pluck('id')->implode(',');
-
-                            // Redirect ke route cetak dengan membawa ID
                             return redirect()->route('cetak_usulan', ['ids' => $ids]);
                         })
-                        ->deselectRecordsAfterCompletion(), // Hilangkan centang setelah klik
+                        ->deselectRecordsAfterCompletion(),
 
-                    // 2. ACTION HAPUS (SOFT DELETE) - Bawaan Filament
+                    // 2. BULK HAPUS (SOFT)
                     Tables\Actions\DeleteBulkAction::make()
-                        ->label('Arsipkan / Hapus Data'),
+                        ->label('Arsipkan Data'),
 
+                    // 3. BULK RESTORE (PULIHKAN BANYAK)
+                    Tables\Actions\RestoreBulkAction::make(),
+
+                    // 4. BULK FORCE DELETE (HAPUS PERMANEN BANYAK)
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -192,8 +207,8 @@ class AssetResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\LoansRelationManager::class, // Yang tadi (Peminjaman)
-            RelationManagers\MaintenancesRelationManager::class, // YANG BARU (Servis)
+            RelationManagers\LoansRelationManager::class,       // Riwayat Peminjaman
+            RelationManagers\MaintenancesRelationManager::class, // Riwayat Servis
         ];
     }
 
@@ -204,5 +219,14 @@ class AssetResource extends Resource
             'create' => Pages\CreateAsset::route('/create'),
             'edit' => Pages\EditAsset::route('/{record}/edit'),
         ];
+    }
+
+    // PENTING: Override fungsi query agar Filter Sampah (Trashed) berfungsi normal
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }
