@@ -3,12 +3,13 @@
 namespace App\Filament\Resources\AssetResource\Pages;
 
 use App\Filament\Resources\AssetResource;
-use App\Imports\AssetsImport; // Panggil Class Import tadi
+use App\Imports\AssetsImport;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Forms\Components\FileUpload;
-use Maatwebsite\Excel\Facades\Excel; // Panggil Library Excel
-use Illuminate\Contracts\View\View;
+use Filament\Notifications\Notification;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class ListAssets extends ListRecords
 {
@@ -17,14 +18,14 @@ class ListAssets extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-
-            // 1. Tombol Download Template (BARU)
+            // 1. Tombol Download Template Excel
             Actions\Action::make('downloadTemplate')
                 ->label('Download Template')
                 ->icon('heroicon-o-arrow-down-tray')
-                ->url(url('template.xlsx')) // Mengarah ke file di folder public
+                ->url(url('template.xlsx')) // Pastikan file template.xlsx ada di folder public/
                 ->color('gray'),
-            // Tombol Import Excel
+
+            // 2. Tombol Import Excel
             Actions\Action::make('importExcel')
                 ->label('Import Excel')
                 ->icon('heroicon-o-arrow-up-tray')
@@ -32,27 +33,51 @@ class ListAssets extends ListRecords
                 ->form([
                     FileUpload::make('attachment')
                         ->label('Upload File Excel (.xlsx)')
-                        ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
-                        ->disk('local') // Simpan sementara di local
+                        ->acceptedFileTypes([
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                            'application/vnd.ms-excel'
+                        ])
+                        ->disk('local')
                         ->directory('temp-import')
+                        ->preserveFilenames()
                         ->required(),
                 ])
                 ->action(function (array $data) {
-                    // Eksekusi Import
-                    // Ambil path file yang baru diupload
-                    $filePath = storage_path('app/' . $data['attachment']);
-                    
-                    Excel::import(new AssetsImport, $filePath);
+                    try {
+                        // Ambil path file
+                        $filePath = Storage::disk('local')->path($data['attachment']);
 
-                    // Notifikasi Sukses
-                    \Filament\Notifications\Notification::make()
-                        ->title('Import Berhasil')
-                        ->body('Data aset berhasil ditambahkan ke database.')
-                        ->success()
-                        ->send();
+                        // Eksekusi Import menggunakan Library Excel
+                        Excel::import(new AssetsImport, $filePath);
+
+                        // Hapus file setelah import agar storage tidak penuh
+                        Storage::disk('local')->delete($data['attachment']);
+
+                        Notification::make()
+                            ->title('Import Berhasil')
+                            ->body('Data aset berhasil diimpor ke database.')
+                            ->success()
+                            ->send();
+                    } catch (\Exception $e) {
+                        Notification::make()
+                            ->title('Import Gagal')
+                            ->body('Terjadi kesalahan: ' . $e->getMessage())
+                            ->danger()
+                            ->send();
+                    }
                 }),
 
-            Actions\CreateAction::make(),
+            // 3. Tombol Laporan Penyusutan (Akuntansi BMN)
+            Actions\Action::make('cetak_penyusutan')
+                ->label('Laporan Penyusutan')
+                ->icon('heroicon-o-document-chart-bar')
+                ->color('warning')
+                ->url(route('cetak_penyusutan'))
+                ->openUrlInNewTab(),
+
+            // 4. Tombol Tambah Data Manual
+            Actions\CreateAction::make()
+                ->label('Tambah Aset'),
         ];
     }
 }

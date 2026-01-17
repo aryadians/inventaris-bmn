@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -57,8 +58,8 @@ class AssetResource extends Resource
 
                             Forms\Components\TextInput::make('kode_barang')
                                 ->label('Kode Akun BMN')
-                                ->disabled() // Dimatikan agar tidak salah input manual
-                                ->dehydrated() // Tetap simpan ke database
+                                ->disabled()
+                                ->dehydrated()
                                 ->placeholder('Otomatis dari kategori...'),
 
                             Forms\Components\TextInput::make('nama_barang')
@@ -87,8 +88,8 @@ class AssetResource extends Resource
                         ]),
                     ]),
 
-                Forms\Components\Section::make('Penggunaan Luar Kantor (Rumah Dinas/Pihak Ke-3)')
-                    ->description('Aktifkan jika barang dibawa keluar lingkungan kantor')
+                Forms\Components\Section::make('Penggunaan Luar Kantor')
+                    ->description('Aktifkan jika barang dibawa ke Rumah Dinas atau Pihak Ke-3')
                     ->collapsible()
                     ->schema([
                         Forms\Components\Toggle::make('is_external')
@@ -145,16 +146,19 @@ class AssetResource extends Resource
                     ->searchable()
                     ->description(fn(Asset $record): string => $record->is_external ? '📍 Luar: ' . $record->nama_pemakai : '🏠 Internal')
                     ->weight('bold'),
-            Tables\Columns\TextColumn::make('nilai_buku')
-                ->label('Nilai Buku Saat Ini')
-                ->money('IDR')
-                ->description(fn(Asset $record): string => 'Penyusutan: ' . number_format(($record->harga_perolehan - $record->nilai_buku), 0, ',', '.'))
-                ->color('success')
-                ->sortable(),
+
+                // FITUR PENYUSUTAN (BARU)
+                Tables\Columns\TextColumn::make('nilai_buku')
+                    ->label('Nilai Buku')
+                    ->money('IDR')
+                    ->description(fn(Asset $record): string => 'Penyusutan: Rp ' . number_format(($record->harga_perolehan - $record->nilai_buku), 0, ',', '.'))
+                    ->color('success')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('kode_barang')
                     ->label('Kode BMN')
-                    ->copyable(),
+                    ->copyable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('room.nama_ruangan')
                     ->label('Lokasi')
@@ -181,16 +185,16 @@ class AssetResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
 
-                // CETAK LABEL QR
-                Tables\Actions\Action::make('cetak_label')
+                // Tombol Cetak Label QR
+                Action::make('cetak_label')
                     ->label('Label')
                     ->icon('heroicon-o-qr-code')
                     ->color('info')
                     ->url(fn($record) => route('cetak_label', $record->id))
                     ->openUrlInNewTab(),
 
-                // CETAK SPTJM
-                Tables\Actions\Action::make('cetak_sptjm')
+                // Tombol Cetak SPTJM
+                Action::make('cetak_sptjm')
                     ->label('SPTJM')
                     ->icon('heroicon-o-document-check')
                     ->color('warning')
@@ -203,10 +207,11 @@ class AssetResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('export_pdf')
-                        ->label('Cetak Laporan PDF')
+                        ->label('Cetak Laporan Inventaris')
                         ->icon('heroicon-o-printer')
                         ->color('success')
                         ->action(fn(Collection $records) => static::exportPdf($records)),
+
                     Tables\Actions\DeleteBulkAction::make()->label('Arsipkan Data'),
                 ]),
             ]);

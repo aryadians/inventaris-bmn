@@ -56,4 +56,21 @@ class LaporanController extends Controller
 
         return $pdf->stream('label-qr-' . $asset->nup . '.pdf');
     }
+    public function cetakPenyusutan()
+    {
+        // Mengambil semua aset yang memiliki kategori (untuk masa manfaat)
+        $assets = \App\Models\Asset::with('category', 'room')->get();
+
+        $data = [
+            'assets' => $assets,
+            'date' => now()->format('d F Y'),
+            'total_nilai_perolehan' => $assets->sum('harga_perolehan'),
+            'total_nilai_buku' => $assets->sum('nilai_buku'),
+        ];
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.penyusutan_report', $data)
+            ->setPaper('a4', 'landscape'); // Landscape agar kolom muat banyak
+
+        return $pdf->stream('Laporan-Penyusutan-BMN.pdf');
+    }
 }
