@@ -68,15 +68,26 @@ class AssetResource extends Resource
                     ->required()
                     ->numeric()
                     ->prefix('Rp'),
-            ]);
+            // Tambahkan komponen FileUpload
+            Forms\Components\FileUpload::make('foto')
+                ->label('Foto Barang Fisik')
+                ->image() // Validasi harus file gambar
+                ->imageEditor() // Fitur keren: Bisa crop/rotate foto langsung di web
+                ->directory('aset-images') // Simpan di folder khusus
+                ->columnSpanFull(), // Agar kotaknya lebar penuh
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                // Kolom NUP
-                Tables\Columns\TextColumn::make('nup')
+            Tables\Columns\ImageColumn::make('foto')
+                ->label('Fisik')
+                ->circular() // Biar fotonya bulat (opsional, bisa hapus kalau mau kotak)
+                ->defaultImageUrl(url('/images/placeholder.png')), // Gambar default kalau gak ada foto
+            // Kolom NUP
+            Tables\Columns\TextColumn::make('nup')
                     ->label('NUP')
                     ->sortable(),
 
