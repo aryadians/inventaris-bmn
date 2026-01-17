@@ -28,7 +28,7 @@ class AssetResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Informasi Dasar')
+                Forms\Components\Section::make('Informasi Dasar & Klasifikasi')
                     ->schema([
                         Forms\Components\FileUpload::make('foto')
                             ->label('Foto Barang Fisik')
@@ -40,26 +40,55 @@ class AssetResource extends Resource
                             ->columnSpanFull(),
 
                         Forms\Components\Grid::make(2)->schema([
-                            Forms\Components\TextInput::make('kode_barang')->required(),
-                            Forms\Components\TextInput::make('nama_barang')->required(),
+                            // FITUR KATEGORI OTOMATIS
+                            Forms\Components\Select::make('category_id')
+                                ->label('Kategori Barang (BMN)')
+                                ->relationship('category', 'nama_kategori')
+                                ->searchable()
+                                ->preload()
+                                ->live()
+                                ->afterStateUpdated(function ($state, Forms\Set $set) {
+                                    if ($state) {
+                                        $category = \App\Models\Category::find($state);
+                                        $set('kode_barang', $category->kode_kategori);
+                                    }
+                                })
+                                ->required(),
+
+                            Forms\Components\TextInput::make('kode_barang')
+                                ->label('Kode Akun BMN')
+                                ->disabled() // Dimatikan agar tidak salah input manual
+                                ->dehydrated() // Tetap simpan ke database
+                                ->placeholder('Otomatis dari kategori...'),
+
+                            Forms\Components\TextInput::make('nama_barang')
+                                ->label('Nama Barang')
+                                ->required(),
+
                             Forms\Components\Select::make('room_id')
                                 ->relationship('room', 'nama_ruangan')
                                 ->label('Lokasi Internal (Ruangan)')
                                 ->searchable()
                                 ->preload()
                                 ->required(),
+
                             Forms\Components\Select::make('kondisi')
                                 ->options([
                                     'BAIK' => 'Baik',
                                     'RUSAK_RINGAN' => 'Rusak Ringan',
                                     'RUSAK_BERAT' => 'Rusak Berat',
                                 ])->required(),
+
+                            Forms\Components\Placeholder::make('info_masa_manfaat')
+                                ->label('Masa Manfaat BMN')
+                                ->content(fn($get) => $get('category_id')
+                                    ? \App\Models\Category::find($get('category_id'))->masa_manfaat . ' Tahun'
+                                    : '-'),
                         ]),
                     ]),
 
-                // --- FITUR LOKASI EKSTERNAL (BARU) ---
-                Forms\Components\Section::make('Penggunaan Luar Kantor')
-                    ->description('Gunakan bagian ini jika BMN dibawa ke Rumah Dinas atau digunakan Pihak Ketiga')
+                Forms\Components\Section::make('Penggunaan Luar Kantor (Rumah Dinas/Pihak Ke-3)')
+                    ->description('Aktifkan jika barang dibawa keluar lingkungan kantor')
                     ->collapsible()
                     ->schema([
                         Forms\Components\Toggle::make('is_external')
@@ -69,12 +98,12 @@ class AssetResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('nama_pemakai')
-                                    ->label('Nama Pegawai/Pihak Ke-3')
+                                    ->label('Nama Pegawai/Pemakai')
                                     ->required(fn($get) => $get('is_external')),
                                 Forms\Components\TextInput::make('nip_pemakai')
-                                    ->label('NIP Pegawai (Opsional)'),
+                                    ->label('NIP Pegawai'),
                                 Forms\Components\Textarea::make('alamat_eksternal')
-                                    ->label('Alamat Detail Lokasi Barang')
+                                    ->label('Alamat Lengkap Lokasi Barang')
                                     ->placeholder('Contoh: Rumah Dinas Lapas Jombang Blok A No. 10')
                                     ->columnSpanFull()
                                     ->required(fn($get) => $get('is_external')),
@@ -114,11 +143,15 @@ class AssetResource extends Resource
 
                 Tables\Columns\TextColumn::make('nama_barang')
                     ->searchable()
-                    ->description(fn(Asset $record): string => $record->is_external ? '📍 Luar Kantor' : '🏠 Internal')
+                    ->description(fn(Asset $record): string => $record->is_external ? '📍 Luar: ' . $record->nama_pemakai : '🏠 Internal')
                     ->weight('bold'),
 
+                Tables\Columns\TextColumn::make('kode_barang')
+                    ->label('Kode BMN')
+                    ->copyable(),
+
                 Tables\Columns\TextColumn::make('room.nama_ruangan')
-                    ->label('Lokasi Terakhir')
+                    ->label('Lokasi')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('kondisi')
@@ -128,25 +161,21 @@ class AssetResource extends Resource
                         'RUSAK_RINGAN' => 'warning',
                         'RUSAK_BERAT' => 'danger',
                     }),
-
-                Tables\Columns\TextColumn::make('harga_perolehan')
-                    ->money('IDR')
-                    ->label('Harga'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->label('Kategori')
+                    ->relationship('category', 'nama_kategori'),
                 Tables\Filters\SelectFilter::make('is_external')
-                    ->label('Posisi Barang')
-                    ->options([
-                        '0' => 'Di Dalam Kantor',
-                        '1' => 'Di Luar Kantor',
-                    ]),
+                    ->label('Posisi')
+                    ->options(['0' => 'Di Kantor', '1' => 'Di Luar']),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
 
-                // ACTION CETAK LABEL QR SATUAN
+                // CETAK LABEL QR
                 Tables\Actions\Action::make('cetak_label')
                     ->label('Label')
                     ->icon('heroicon-o-qr-code')
@@ -154,7 +183,7 @@ class AssetResource extends Resource
                     ->url(fn($record) => route('cetak_label', $record->id))
                     ->openUrlInNewTab(),
 
-                // ACTION CETAK SPTJM (Hanya muncul jika di luar)
+                // CETAK SPTJM
                 Tables\Actions\Action::make('cetak_sptjm')
                     ->label('SPTJM')
                     ->icon('heroicon-o-document-check')
@@ -172,7 +201,6 @@ class AssetResource extends Resource
                         ->icon('heroicon-o-printer')
                         ->color('success')
                         ->action(fn(Collection $records) => static::exportPdf($records)),
-
                     Tables\Actions\DeleteBulkAction::make()->label('Arsipkan Data'),
                 ]),
             ]);
@@ -206,7 +234,7 @@ class AssetResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['room'])
+            ->with(['room', 'category'])
             ->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 }
