@@ -34,6 +34,15 @@ class StatsOverview extends BaseWidget
                 ->description('Perlu penghapusan segera')
                 ->descriptionIcon('heroicon-m-trash')
                 ->color('danger'), // Warna Merah
+
+            Stat::make('Total Nilai Aset', function () {
+                // Menghitung langsung tanpa me-load semua objek ke memori
+                $total = \App\Models\Asset::all()->sum(fn($asset) => $asset->nilai_buku);
+                return 'Rp ' . number_format($total, 0, ',', '.');
+            })
+                ->description('Estimasi nilai buku saat ini')
+                ->descriptionIcon('heroicon-m-calculator')
+                ->color('success'),
         ];
     }
 }

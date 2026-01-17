@@ -99,4 +99,19 @@ class Asset extends Model
     {
         return $this->hasMany(AssetMutation::class);
     }
+    public function getNilaiBukuAttribute()
+    {
+        $harga = $this->harga_perolehan;
+        $tanggalPerolehan = \Carbon\Carbon::parse($this->tanggal_perolehan);
+        $masaManfaat = $this->category->masa_manfaat ?? 1; // Ambil dari relasi kategori
+
+        $usiaBarang = $tanggalPerolehan->diffInYears(now());
+        $penyusutanPerTahun = $harga / $masaManfaat;
+
+        $totalPenyusutan = $penyusutanPerTahun * $usiaBarang;
+        $nilaiBuku = $harga - $totalPenyusutan;
+
+        // Jika barang sudah lewat masa manfaat, nilai buku tidak boleh negatif (minimal Rp 1 atau Rp 0)
+        return $nilaiBuku > 0 ? $nilaiBuku : 0;
+    }
 }

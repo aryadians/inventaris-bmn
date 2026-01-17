@@ -145,6 +145,12 @@ class AssetResource extends Resource
                     ->searchable()
                     ->description(fn(Asset $record): string => $record->is_external ? '📍 Luar: ' . $record->nama_pemakai : '🏠 Internal')
                     ->weight('bold'),
+            Tables\Columns\TextColumn::make('nilai_buku')
+                ->label('Nilai Buku Saat Ini')
+                ->money('IDR')
+                ->description(fn(Asset $record): string => 'Penyusutan: ' . number_format(($record->harga_perolehan - $record->nilai_buku), 0, ',', '.'))
+                ->color('success')
+                ->sortable(),
 
                 Tables\Columns\TextColumn::make('kode_barang')
                     ->label('Kode BMN')
