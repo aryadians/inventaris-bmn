@@ -182,6 +182,7 @@ class AssetResource extends Resource
         return [
             RelationManagers\LoansRelationManager::class,
             RelationManagers\MaintenancesRelationManager::class,
+            RelationManagers\MutationsRelationManager::class,
         ];
     }
 

@@ -3,11 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
-// Route untuk mencetak laporan
-Route::get('/cetak-laporan', [LaporanController::class, 'cetak'])->name('cetak_laporan');
-Route::get('/cetak-bukti/{id}', [LaporanController::class, 'cetakBukti'])->name('cetak_bukti');
-Route::get('/cetak-usulan', [LaporanController::class, 'cetakUsulan'])->name('cetak_usulan');
+// Redirect halaman depan langsung ke Dashboard Admin
+Route::redirect('/', '/admin');
+
+// Grouping Route untuk Laporan agar lebih rapi
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cetak-laporan', [LaporanController::class, 'cetak'])->name('cetak_laporan');
+    Route::get('/cetak-bukti/{id}', [LaporanController::class, 'cetakBukti'])->name('cetak_bukti');
+    Route::get('/cetak-usulan', [LaporanController::class, 'cetakUsulan'])->name('cetak_usulan');
+});
