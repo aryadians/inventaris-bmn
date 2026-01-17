@@ -1,3 +1,4 @@
+
 <p align="center">
   <a href="https://github.com/aryadians/inventaris-bmn">
     <img src="public/images/logo.png" alt="Logo" width="80" height="80">
@@ -6,7 +7,7 @@
   <h3 align="center">Sistem Inventaris BMN</h3>
 
   <p align="center">
-    Sistem Inventaris BMN (Barang Milik Negara) adalah sebuah aplikasi berbasis web yang dirancang untuk memudahkan proses pengelolaan dan pemantauan aset negara di lingkungan Politeknik Negeri Indramayu.
+    Aplikasi manajemen inventaris Barang Milik Negara (BMN) berbasis web yang dibangun menggunakan Laravel dan Filament.
     <br />
     <a href="https://github.com/aryadians/inventaris-bmn"><strong>Explore the docs »</strong></a>
     <br />
@@ -17,10 +18,15 @@
   </p>
 </p>
 
-[![PHP Version][php-shield]][php-url]
-[![Laravel Version][laravel-shield]][laravel-url]
-[![Filament Version][filament-shield]][filament-url]
-[![MIT License][license-shield]][license-url]
+<div align="center">
+
+[![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![Filament](https://img.shields.io/badge/Filament-FAA04B?style=for-the-badge&logo=filament&logoColor=white)](https://filamentphp.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+
+</div>
 
 ## Tentang Aplikasi
 
@@ -91,11 +97,35 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
 
 ## Lisensi
 
-Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanjut.
+Proyek ini dilisensikan di bawah Lisensi MIT.
+
+```
+MIT License
+
+Copyright (c) 2026 Arya Dian
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 ## Kontak
 
-Arya Diansyah - [@aryadiansyah_](https://twitter.com/aryadiansyah_) - aryadiansyah86@gmail.com
+Arya Dian - [@aransptr_](https://instagram.com/aransptr_) - aryadian003@gmail.com
 
 Project Link: [https://github.com/aryadians/inventaris-bmn](https://github.com/aryadians/inventaris-bmn)
 
@@ -105,5 +135,3 @@ Project Link: [https://github.com/aryadians/inventaris-bmn](https://github.com/a
 [laravel-url]: https://laravel.com/
 [filament-shield]: https://img.shields.io/badge/Filament-3.2-orange?style=for-the-badge
 [filament-url]: https://filamentphp.com/
-[license-shield]: https://img.shields.io/github/license/aryadians/inventaris-bmn?style=for-the-badge
-[license-url]: https://github.com/aryadians/inventaris-bmn/blob/master/LICENSE
