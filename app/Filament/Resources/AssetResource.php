@@ -153,7 +153,8 @@ class AssetResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Panggil class Manager yang baru kita buat
+            RelationManagers\LoansRelationManager::class,
         ];
     }
 

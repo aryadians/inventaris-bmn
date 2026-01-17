@@ -140,8 +140,45 @@ class LoanResource extends Resource
                     ]),
             ])
             ->actions([
+                // 1. Tombol Cetak Surat Jalan (Yang tadi sudah dibuat)
+                Tables\Actions\Action::make('cetak_surat')
+                    ->label('Surat Jalan')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->url(fn(Loan $record) => route('cetak_bukti', $record->id))
+                    ->openUrlInNewTab(),
+
+                // 2. TOMBOL BARU: Kembalikan Barang (Quick Return)
+                Tables\Actions\Action::make('kembalikan')
+                    ->label('Kembalikan')
+                    ->icon('heroicon-o-check-circle') // Ikon Centang
+                    ->color('success') // Warna Hijau
+                    ->requiresConfirmation() // Muncul pop-up konfirmasi "Yakin?"
+                    ->modalHeading('Konfirmasi Pengembalian')
+                    ->modalDescription('Apakah barang ini benar-benar sudah kembali dalam kondisi baik?')
+                    ->modalSubmitActionLabel('Ya, Sudah Kembali')
+
+                    // Hanya muncul jika status masih DIPINJAM
+                    ->visible(fn(Loan $record) => $record->status === 'DIPINJAM')
+
+                    // Logic Update Database saat diklik
+                    ->action(function (Loan $record) {
+                        $record->update([
+                            'status' => 'DIKEMBALIKAN',
+                            'tanggal_kembali_realisasi' => now(), // Isi tanggal hari ini otomatis
+                        ]);
+
+                        // Kirim notifikasi sukses di pojok kanan
+                        \Filament\Notifications\Notification::make()
+                            ->title('Berhasil')
+                            ->body('Barang telah ditandai kembali.')
+                            ->success()
+                            ->send();
+                    }),
+
+                // Tombol Edit & Delete bawaan
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(), // Opsional: Bisa disembunyikan biar data gak hilang
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
