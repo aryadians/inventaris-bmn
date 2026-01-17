@@ -20,4 +20,18 @@ class LaporanController extends Controller
         // 'stream' artinya buka di browser dulu, kalau 'download' langsung unduh file
         return $pdf->stream('Laporan-Aset-BMN.pdf');
     }
+    // ... fungsi cetak() yang lama ...
+
+    // Fungsi Baru: Cetak Bukti Peminjaman per Transaksi
+    public function cetakBukti($id)
+    {
+        // 1. Ambil data peminjaman berdasarkan ID
+        $loan = \App\Models\Loan::with(['user', 'asset.room'])->findOrFail($id);
+
+        // 2. Load View khusus surat peminjaman
+        $pdf = Pdf::loadView('laporan.bukti_pinjam', ['loan' => $loan]);
+
+        // 3. Stream PDF (Nama file sesuai nama peminjam)
+        return $pdf->stream('Bukti-Pinjam-' . $loan->asset->kode_barang . '.pdf');
+    }
 }

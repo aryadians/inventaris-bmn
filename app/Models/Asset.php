@@ -15,4 +15,9 @@ class Asset extends Model
     {
         return $this->belongsTo(Room::class);
     }
+    // Tambahkan ini di dalam class Asset
+    public function loans(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Loan::class);
+    }
 }
