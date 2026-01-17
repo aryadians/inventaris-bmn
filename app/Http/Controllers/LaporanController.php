@@ -46,4 +46,14 @@ class LaporanController extends Controller
         $pdf = Pdf::loadView('laporan.usulan_penghapusan', ['assets' => $assets]);
         return $pdf->stream('Usulan-Penghapusan-BMN.pdf');
     }
+    public function cetakLabel($id)
+    {
+        $asset = \App\Models\Asset::findOrFail($id);
+
+        // Ukuran kertas custom untuk printer barcode (misal: 5cm x 3cm)
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.label_qr', ['asset' => $asset])
+            ->setPaper([0, 0, 150, 100]); // Ukuran poin untuk stiker kecil
+
+        return $pdf->stream('label-qr-' . $asset->nup . '.pdf');
+    }
 }

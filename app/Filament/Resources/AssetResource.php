@@ -132,6 +132,13 @@ class AssetResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+            // TOMBOL CETAK LABEL SATUAN
+            Tables\Actions\Action::make('cetak_label')
+                ->label('Label')
+                ->icon('heroicon-o-qr-code')
+                ->color('info')
+                ->url(fn($record) => route('cetak_label', $record->id))
+                ->openUrlInNewTab(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
