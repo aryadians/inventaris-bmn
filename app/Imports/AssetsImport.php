@@ -17,7 +17,7 @@ class AssetsImport implements ToModel, WithHeadingRow, WithValidation
         $room = Room::where('nama_ruangan', 'like', '%' . $row['ruangan'] . '%')->first();
 
         // 2. Logika Mencari Kategori berdasarkan Nama
-        $category = Category::where('nama_kategori', 'like', '%' . $row['kategori'] . '%')->first();
+        $category = Category::where('nama_kategori', 'like', trim($row['kategori']))->first();
 
         return new Asset([
             'nama_barang'       => $row['nama_barang'],
