@@ -19,4 +19,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cetak-usulan', [LaporanController::class, 'cetakUsulan'])->name('cetak_usulan');
     // Tambahkan di dalam group middleware auth
     Route::get('/cetak-label/{id}', [LaporanController::class, 'cetakLabel'])->name('cetak_label');
+    Route::get('/cetak-sptjm/{id}', [LaporanController::class, 'cetakSptjm'])->name('cetak_sptjm');
 });

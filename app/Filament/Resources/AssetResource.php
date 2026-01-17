@@ -14,10 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\HtmlString;
-// --- IMPORT UNTUK PDF ---
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Blade;
 
 class AssetResource extends Resource
 {
@@ -30,53 +28,74 @@ class AssetResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('foto')
-                    ->label('Foto Barang Fisik')
-                    ->image()
-                    ->imageEditor()
-                    ->disk('public')
-                    ->directory('aset-images')
-                    ->visibility('public')
-                    ->columnSpanFull(),
-            // Di dalam public static function form(Form $form)
-            Forms\Components\Placeholder::make('qr_preview')
-                ->label('QR Code Asset')
-                ->content(function ($record) {
-                    if (!$record) return 'Simpan dahulu untuk melihat QR';
-                    $svg = QrCode::format('svg')->size(120)->generate($record->kode_barang . '-' . $record->nup);
-                    return new HtmlString('<div style="background:white; padding:10px; display:inline-block;">' . $svg . '</div>');
-                }),
+                Forms\Components\Section::make('Informasi Dasar')
+                    ->schema([
+                        Forms\Components\FileUpload::make('foto')
+                            ->label('Foto Barang Fisik')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('aset-images')
+                            ->visibility('public')
+                            ->columnSpanFull(),
 
-                Forms\Components\Select::make('room_id')
-                    ->relationship('room', 'nama_ruangan')
-                    ->label('Lokasi Ruangan')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                        Forms\Components\Grid::make(2)->schema([
+                            Forms\Components\TextInput::make('kode_barang')->required(),
+                            Forms\Components\TextInput::make('nama_barang')->required(),
+                            Forms\Components\Select::make('room_id')
+                                ->relationship('room', 'nama_ruangan')
+                                ->label('Lokasi Internal (Ruangan)')
+                                ->searchable()
+                                ->preload()
+                                ->required(),
+                            Forms\Components\Select::make('kondisi')
+                                ->options([
+                                    'BAIK' => 'Baik',
+                                    'RUSAK_RINGAN' => 'Rusak Ringan',
+                                    'RUSAK_BERAT' => 'Rusak Berat',
+                                ])->required(),
+                        ]),
+                    ]),
 
-                Forms\Components\TextInput::make('kode_barang')
-                    ->required(),
+                // --- FITUR LOKASI EKSTERNAL (BARU) ---
+                Forms\Components\Section::make('Penggunaan Luar Kantor')
+                    ->description('Gunakan bagian ini jika BMN dibawa ke Rumah Dinas atau digunakan Pihak Ketiga')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\Toggle::make('is_external')
+                            ->label('Status: Digunakan di Luar Kantor?')
+                            ->live(),
 
-                Forms\Components\TextInput::make('nama_barang')
-                    ->required(),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('nama_pemakai')
+                                    ->label('Nama Pegawai/Pihak Ke-3')
+                                    ->required(fn($get) => $get('is_external')),
+                                Forms\Components\TextInput::make('nip_pemakai')
+                                    ->label('NIP Pegawai (Opsional)'),
+                                Forms\Components\Textarea::make('alamat_eksternal')
+                                    ->label('Alamat Detail Lokasi Barang')
+                                    ->placeholder('Contoh: Rumah Dinas Lapas Jombang Blok A No. 10')
+                                    ->columnSpanFull()
+                                    ->required(fn($get) => $get('is_external')),
+                            ])->visible(fn($get) => $get('is_external')),
+                    ]),
 
-                Forms\Components\Hidden::make('nup'),
-
-                Forms\Components\Select::make('kondisi')
-                    ->options([
-                        'BAIK' => 'Baik',
-                        'RUSAK_RINGAN' => 'Rusak Ringan',
-                        'RUSAK_BERAT' => 'Rusak Berat',
-                    ])
-                    ->required(),
-
-                Forms\Components\DatePicker::make('tanggal_perolehan')
-                    ->required(),
-
-                Forms\Components\TextInput::make('harga_perolehan')
-                    ->required()
-                    ->numeric()
-                    ->prefix('Rp'),
+                Forms\Components\Section::make('Data Perolehan & QR')
+                    ->schema([
+                        Forms\Components\Grid::make(2)->schema([
+                            Forms\Components\DatePicker::make('tanggal_perolehan')->required(),
+                            Forms\Components\TextInput::make('harga_perolehan')
+                                ->required()->numeric()->prefix('Rp'),
+                        ]),
+                        Forms\Components\Placeholder::make('qr_preview')
+                            ->label('QR Code Asset')
+                            ->content(function ($record) {
+                                if (!$record) return 'Simpan dahulu untuk melihat QR';
+                                $svg = QrCode::format('svg')->size(120)->generate($record->kode_barang . '-' . $record->nup);
+                                return new HtmlString('<div style="background:white; padding:10px; display:inline-block; border:1px solid #ccc;">' . $svg . '</div>');
+                            }),
+                    ]),
             ]);
     }
 
@@ -93,32 +112,14 @@ class AssetResource extends Resource
                     ->label('NUP')
                     ->sortable(),
 
-//                 Tables\Columns\TextColumn::make('qr_code')
-//                     // Di dalam Tables\Columns\TextColumn::make('qr_code')
-// ->getStateUsing(function ($record) {
-//     if (!$record || !$record->kode_barang || !$record->nup) return '-';
-    
-//     // Gunakan try-catch agar jika error tidak membuat halaman stuck
-//     try {
-//         $svg = QrCode::format('svg')->size(50)->generate($record->kode_barang . '-' . $record->nup);
-//         return new HtmlString('<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" width="50" height="50" />');
-//     } catch (\Exception $e) {
-//         return 'Error QR';
-//     }
-// }),
-
-                Tables\Columns\TextColumn::make('kode_barang')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
                 Tables\Columns\TextColumn::make('nama_barang')
                     ->searchable()
+                    ->description(fn(Asset $record): string => $record->is_external ? '📍 Luar Kantor' : '🏠 Internal')
                     ->weight('bold'),
 
                 Tables\Columns\TextColumn::make('room.nama_ruangan')
-                    ->label('Lokasi')
-                    ->sortable()
-                    ->searchable(),
+                    ->label('Lokasi Terakhir')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('kondisi')
                     ->badge()
@@ -134,66 +135,54 @@ class AssetResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                Tables\Filters\SelectFilter::make('kondisi')
+                Tables\Filters\SelectFilter::make('is_external')
+                    ->label('Posisi Barang')
                     ->options([
-                        'BAIK' => 'Baik',
-                        'RUSAK_RINGAN' => 'Rusak Ringan',
-                        'RUSAK_BERAT' => 'Rusak Berat',
+                        '0' => 'Di Dalam Kantor',
+                        '1' => 'Di Luar Kantor',
                     ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-            // TOMBOL CETAK LABEL SATUAN
-            Tables\Actions\Action::make('cetak_label')
-                ->label('Label')
-                ->icon('heroicon-o-qr-code')
-                ->color('info')
-                ->url(fn($record) => route('cetak_label', $record->id))
-                ->openUrlInNewTab(),
+
+                // ACTION CETAK LABEL QR SATUAN
+                Tables\Actions\Action::make('cetak_label')
+                    ->label('Label')
+                    ->icon('heroicon-o-qr-code')
+                    ->color('info')
+                    ->url(fn($record) => route('cetak_label', $record->id))
+                    ->openUrlInNewTab(),
+
+                // ACTION CETAK SPTJM (Hanya muncul jika di luar)
+                Tables\Actions\Action::make('cetak_sptjm')
+                    ->label('SPTJM')
+                    ->icon('heroicon-o-document-check')
+                    ->color('warning')
+                    ->url(fn($record) => route('cetak_sptjm', $record->id))
+                    ->openUrlInNewTab()
+                    ->visible(fn($record) => $record->is_external),
+
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // --- FITUR CETAK PDF BARU ---
                     Tables\Actions\BulkAction::make('export_pdf')
                         ->label('Cetak Laporan PDF')
                         ->icon('heroicon-o-printer')
                         ->color('success')
                         ->action(fn(Collection $records) => static::exportPdf($records)),
 
-                    Tables\Actions\BulkAction::make('cetak_usulan')
-                        ->label('Cetak Usulan Penghapusan')
-                        ->icon('heroicon-o-document-text')
-                        ->color('warning')
-                        ->action(function ($records) {
-                            $ids = $records->pluck('id')->implode(',');
-                            return redirect()->route('cetak_usulan', ['ids' => $ids]);
-                        }),
-
                     Tables\Actions\DeleteBulkAction::make()->label('Arsipkan Data'),
-                    Tables\Actions\RestoreBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }
 
-    // --- LOGIKA GENERATE PDF ---
     public static function exportPdf(Collection $records)
     {
-        $data = [
-            'records' => $records,
-            'date' => now()->format('d F Y'),
-        ];
-
+        $data = ['records' => $records, 'date' => now()->format('d F Y')];
         $pdf = Pdf::loadView('pdf.assets_report', $data);
-
-        return response()->streamDownload(
-            fn() => print($pdf->output()),
-            "Laporan_BMN_" . now()->format('Y-m-d') . ".pdf"
-        );
+        return response()->streamDownload(fn() => print($pdf->output()), "Laporan_BMN.pdf");
     }
 
     public static function getRelations(): array
@@ -217,10 +206,7 @@ class AssetResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->select(['id', 'nama_barang', 'kode_barang', 'nup', 'room_id', 'kondisi', 'harga_perolehan']) // Ambil kolom yang perlu saja
-            ->with(['room:id,nama_ruangan']) // Ambil relasi ruangan hanya ID dan Nama
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+            ->with(['room'])
+            ->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 }

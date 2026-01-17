@@ -22,21 +22,17 @@ class Asset extends Model
     protected static function booted()
     {
         static::updating(function ($asset) {
-            // Hanya rekam jika room_id berubah
             if ($asset->isDirty('room_id')) {
-                $oldRoomId = $asset->getOriginal('room_id');
-                $newRoomId = $asset->room_id;
-
-                $oldRoom = \App\Models\Room::find($oldRoomId)?->nama_ruangan ?? 'Awal';
-                $roomTujuan = \App\Models\Room::find($newRoomId);
+                $oldRoomName = \App\Models\Room::find($asset->getOriginal('room_id'))?->nama_ruangan ?? 'Awal';
+                $roomTujuan = \App\Models\Room::find($asset->room_id);
 
                 \App\Models\AssetMutation::create([
                     'asset_id' => $asset->id,
-                    'ruangan_asal' => $oldRoom,
+                    'ruangan_asal' => $oldRoomName,
                     'ruangan_tujuan' => $roomTujuan->nama_ruangan,
                     'petugas' => auth()->user()->name ?? 'System',
-                    'penanggung_jawab_baru' => $roomTujuan->penanggung_jawab ?? '-',
-                    'alasan' => 'Perubahan Lokasi Barang',
+                    'penanggung_jawab_baru' => $roomTujuan->penanggung_jawab ?? $asset->nama_pemakai ?? '-',
+                    'alasan' => 'Perubahan Lokasi Ruangan',
                 ]);
             }
         });
