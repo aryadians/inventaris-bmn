@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -24,4 +25,5 @@ class Asset extends Model
     {
         return $this->hasMany(Maintenance::class);
     }
+    use SoftDeletes; // <--- Pasang ini di dalam class
 }

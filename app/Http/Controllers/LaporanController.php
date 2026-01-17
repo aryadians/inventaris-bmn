@@ -34,4 +34,16 @@ class LaporanController extends Controller
         // 3. Stream PDF (Nama file sesuai nama peminjam)
         return $pdf->stream('Bukti-Pinjam-' . $loan->asset->kode_barang . '.pdf');
     }
+    // Cetak Usulan Penghapusan (Menerima banyak ID)
+    public function cetakUsulan(Request $request)
+    {
+        // Ambil ID dari URL (format: ?ids=1,2,3)
+        $ids = explode(',', $request->query('ids'));
+
+        // Ambil data aset berdasarkan ID tersebut
+        $assets = Asset::whereIn('id', $ids)->get();
+
+        $pdf = Pdf::loadView('laporan.usulan_penghapusan', ['assets' => $assets]);
+        return $pdf->stream('Usulan-Penghapusan-BMN.pdf');
+    }
 }

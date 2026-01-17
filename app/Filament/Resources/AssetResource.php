@@ -166,7 +166,25 @@ class AssetResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+
+                    // 1. ACTION CETAK USULAN (PDF)
+                    Tables\Actions\BulkAction::make('cetak_usulan')
+                        ->label('Cetak Usulan Penghapusan')
+                        ->icon('heroicon-o-printer')
+                        ->color('warning')
+                        ->action(function ($records) {
+                            // Ambil ID barang yang dicentang
+                            $ids = $records->pluck('id')->implode(',');
+
+                            // Redirect ke route cetak dengan membawa ID
+                            return redirect()->route('cetak_usulan', ['ids' => $ids]);
+                        })
+                        ->deselectRecordsAfterCompletion(), // Hilangkan centang setelah klik
+
+                    // 2. ACTION HAPUS (SOFT DELETE) - Bawaan Filament
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Arsipkan / Hapus Data'),
+
                 ]),
             ]);
     }

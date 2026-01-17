@@ -10,3 +10,4 @@ Route::get('/', function () {
 // Route untuk mencetak laporan
 Route::get('/cetak-laporan', [LaporanController::class, 'cetak'])->name('cetak_laporan');
 Route::get('/cetak-bukti/{id}', [LaporanController::class, 'cetakBukti'])->name('cetak_bukti');
+Route::get('/cetak-usulan', [LaporanController::class, 'cetakUsulan'])->name('cetak_usulan');
