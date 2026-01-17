@@ -1,59 +1,109 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="https://github.com/aryadians/inventaris-bmn">
+    <img src="public/images/logo.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">Sistem Inventaris BMN</h3>
+
+  <p align="center">
+    Sistem Inventaris BMN (Barang Milik Negara) adalah sebuah aplikasi berbasis web yang dirancang untuk memudahkan proses pengelolaan dan pemantauan aset negara di lingkungan Politeknik Negeri Indramayu.
+    <br />
+    <a href="https://github.com/aryadians/inventaris-bmn"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/aryadians/inventaris-bmn/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/aryadians/inventaris-bmn/issues">Request Feature</a>
+  </p>
 </p>
 
-## About Laravel
+[![PHP Version][php-shield]][php-url]
+[![Laravel Version][laravel-shield]][laravel-url]
+[![Filament Version][filament-shield]][filament-url]
+[![MIT License][license-shield]][license-url]
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tentang Aplikasi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Sistem Inventaris BMN adalah aplikasi yang dirancang untuk memudahkan pengelolaan aset dan barang milik negara. Aplikasi ini mencakup fitur-fitur seperti:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+*   **Manajemen Aset:** Menambah, mengubah, dan menghapus data aset.
+*   **Manajemen Ruangan:** Mengelola daftar ruangan tempat aset disimpan.
+*   **Peminjaman Aset:** Melacak peminjaman dan pengembalian aset.
+*   **Pemeliharaan Aset:** Mencatat riwayat pemeliharaan aset.
+*   **Laporan:** Menghasilkan laporan aset, peminjaman, dan usulan penghapusan.
 
-## Learning Laravel
+## Dibangun Dengan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Aplikasi ini dibangun dengan menggunakan teknologi-teknologi berikut:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+*   [Laravel](https://laravel.com/)
+*   [Filament](https://filamentphp.com/)
+*   [PHP](https://www.php.net/)
+*   [MySQL](https://www.mysql.com/)
 
-## Laravel Sponsors
+## Memulai
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Untuk menjalankan aplikasi ini secara lokal, ikuti langkah-langkah berikut.
 
-### Premium Partners
+### Prasyarat
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Pastikan Anda telah menginstal perangkat lunak berikut:
 
-## Contributing
+*   PHP >= 8.2
+*   Composer
+*   Node.js
+*   NPM
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Instalasi
 
-## Code of Conduct
+1.  Clone repositori
+    ```sh
+    git clone https://github.com/aryadians/inventaris-bmn.git
+    ```
+2.  Masuk ke direktori proyek
+    ```sh
+    cd inventaris-bmn
+    ```
+3.  Instal dependensi PHP
+    ```sh
+    composer install
+    ```
+4.  Instal dependensi JavaScript
+    ```sh
+    npm install
+    ```
+5.  Salin file `.env.example` menjadi `.env`
+    ```sh
+    cp .env.example .env
+    ```
+6.  Buat kunci aplikasi
+    ```sh
+    php artisan key:generate
+    ```
+7.  Jalankan migrasi database
+    ```sh
+    php artisan migrate
+    ```
+8.  Jalankan server pengembangan
+    ```sh
+    php artisan serve
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Lisensi
 
-## Security Vulnerabilities
+Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanjut.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Kontak
 
-## License
+Arya Diansyah - [@aryadiansyah_](https://twitter.com/aryadiansyah_) - aryadiansyah86@gmail.com
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Project Link: [https://github.com/aryadians/inventaris-bmn](https://github.com/aryadians/inventaris-bmn)
+
+[php-shield]: https://img.shields.io/badge/PHP-8.2%2B-blue?style=for-the-badge
+[php-url]: https://www.php.net/
+[laravel-shield]: https://img.shields.io/badge/Laravel-12.x-orange?style=for-the-badge
+[laravel-url]: https://laravel.com/
+[filament-shield]: https://img.shields.io/badge/Filament-3.2-orange?style=for-the-badge
+[filament-url]: https://filamentphp.com/
+[license-shield]: https://img.shields.io/github/license/aryadians/inventaris-bmn?style=for-the-badge
+[license-url]: https://github.com/aryadians/inventaris-bmn/blob/master/LICENSE
