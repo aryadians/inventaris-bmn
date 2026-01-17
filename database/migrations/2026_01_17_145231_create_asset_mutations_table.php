@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('asset_id')->constrained()->cascadeOnDelete();
             $table->string('ruangan_asal');
             $table->string('ruangan_tujuan');
-            $table->string('petugas'); // Siapa yang memindahkan
+            $table->string('petugas'); // Admin yang input
+            $table->string('penanggung_jawab_baru')->nullable(); // Penanggung jawab di ruangan baru
             $table->text('alasan')->nullable();
             $table->timestamps();
         });

@@ -38,6 +38,14 @@ class AssetResource extends Resource
                     ->directory('aset-images')
                     ->visibility('public')
                     ->columnSpanFull(),
+            // Di dalam public static function form(Form $form)
+            Forms\Components\Placeholder::make('qr_preview')
+                ->label('QR Code Asset')
+                ->content(function ($record) {
+                    if (!$record) return 'Simpan dahulu untuk melihat QR';
+                    $svg = QrCode::format('svg')->size(120)->generate($record->kode_barang . '-' . $record->nup);
+                    return new HtmlString('<div style="background:white; padding:10px; display:inline-block;">' . $svg . '</div>');
+                }),
 
                 Forms\Components\Select::make('room_id')
                     ->relationship('room', 'nama_ruangan')
@@ -85,15 +93,19 @@ class AssetResource extends Resource
                     ->label('NUP')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('qr_code')
-                    ->label('QR Scan')
-                    ->html()
-                    ->getStateUsing(function ($record) {
-                        if (!$record->kode_barang || !$record->nup) return '-';
-                        $svg = QrCode::format('svg')->size(50)->generate($record->kode_barang . '-' . $record->nup);
-                        $base64 = base64_encode($svg);
-                        return new HtmlString('<img src="data:image/svg+xml;base64,' . $base64 . '" width="50" height="50" />');
-                    }),
+//                 Tables\Columns\TextColumn::make('qr_code')
+//                     // Di dalam Tables\Columns\TextColumn::make('qr_code')
+// ->getStateUsing(function ($record) {
+//     if (!$record || !$record->kode_barang || !$record->nup) return '-';
+    
+//     // Gunakan try-catch agar jika error tidak membuat halaman stuck
+//     try {
+//         $svg = QrCode::format('svg')->size(50)->generate($record->kode_barang . '-' . $record->nup);
+//         return new HtmlString('<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" width="50" height="50" />');
+//     } catch (\Exception $e) {
+//         return 'Error QR';
+//     }
+// }),
 
                 Tables\Columns\TextColumn::make('kode_barang')
                     ->searchable()
@@ -205,6 +217,8 @@ class AssetResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
+            ->select(['id', 'nama_barang', 'kode_barang', 'nup', 'room_id', 'kondisi', 'harga_perolehan']) // Ambil kolom yang perlu saja
+            ->with(['room:id,nama_ruangan']) // Ambil relasi ruangan hanya ID dan Nama
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

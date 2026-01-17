@@ -30,24 +30,23 @@ class MutationsRelationManager extends RelationManager
             ->recordTitleAttribute('ruangan_tujuan')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Tanggal Pindah')
+                    ->label('Tanggal Mutasi')
                     ->dateTime('d M Y H:i')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ruangan_asal')
+                    ->label('Dari')
                     ->badge()
                     ->color('gray'),
-                Tables\Columns\IconColumn::make('panah')
-                    ->defaultIcon('heroicon-m-arrow-right')
-                    ->label(''),
                 Tables\Columns\TextColumn::make('ruangan_tujuan')
+                    ->label('Ke')
                     ->badge()
                     ->color('success'),
+                Tables\Columns\TextColumn::make('penanggung_jawab_baru')
+                    ->label('Pj. Baru'),
                 Tables\Columns\TextColumn::make('petugas')
-                    ->label('Dipindahkan Oleh'),
+                    ->label('Petugas Input'),
             ])
-            ->filters([])
-            ->headerActions([])
-            ->actions([])
-            ->bulkActions([]);
+            ->defaultSort('created_at', 'desc')
+            ->paginated([5, 10]); // Batasi jumlah baris agar aplikasi tetap ringan
     }
 }
