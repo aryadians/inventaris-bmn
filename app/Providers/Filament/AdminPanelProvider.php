@@ -27,8 +27,16 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+
+            // --- MULAI BAGIAN BRANDING LAPAS JOMBANG ---
+            ->brandName('BMN Lapas Jombang')
+            ->brandLogo(fn() => view('filament.admin.logo'))
+            ->brandLogoHeight('3rem')
+            ->favicon(asset('images/logo.png'))
+            // -------------------------------------------
+
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => \Filament\Support\Colors\Color::Blue,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -38,21 +46,23 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
+                \Illuminate\Cookie\Middleware\EncryptCookies::class,
+                \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+                \Illuminate\Session\Middleware\StartSession::class,
+                \Illuminate\Session\Middleware\AuthenticateSession::class,
+                \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+                \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+                \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
+                // --- PERBAIKAN DI SINI (Gunakan Namespace Filament) ---
+                \Filament\Http\Middleware\DisableBladeIconComponents::class,
+                \Filament\Http\Middleware\DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                Authenticate::class,
+                \Filament\Http\Middleware\Authenticate::class,
             ]);
     }
 }
