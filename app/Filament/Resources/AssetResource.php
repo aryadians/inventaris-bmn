@@ -31,8 +31,16 @@ class AssetResource extends Resource
     {
         return $form
             ->schema([
-                // 1. Input Ruangan (Dropdown Relasi)
-                Forms\Components\Select::make('room_id')
+            // --- INI UNTUK INPUT FOTO (Di dalam FORM) ---
+            Forms\Components\FileUpload::make('foto')
+                ->label('Foto Barang Fisik')
+                ->image()
+                ->disk('public') // Simpan di folder public
+                ->directory('aset-images') // Masuk folder aset-images
+                ->visibility('public')
+                ->columnSpanFull(), // Agar lebar formnya penuh
+            // 1. Input Ruangan (Dropdown Relasi)
+            Forms\Components\Select::make('room_id')
                     ->relationship('room', 'nama_ruangan')
                     ->label('Lokasi Ruangan')
                     ->searchable()
@@ -82,10 +90,12 @@ class AssetResource extends Resource
     {
         return $table
             ->columns([
+
+            // --- INI UNTUK MENAMPILKAN FOTO (Di dalam TABLE) ---
             Tables\Columns\ImageColumn::make('foto')
                 ->label('Fisik')
-                ->circular() // Biar fotonya bulat (opsional, bisa hapus kalau mau kotak)
-                ->defaultImageUrl(url('/images/placeholder.png')), // Gambar default kalau gak ada foto
+                ->circular() // Biar bulat
+                ->defaultImageUrl(url('/images/placeholder.png')), // Gambar default jika kosong
             // Kolom NUP
             Tables\Columns\TextColumn::make('nup')
                     ->label('NUP')
