@@ -29,16 +29,27 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
 
-            // --- MULAI BAGIAN BRANDING LAPAS JOMBANG ---
-            ->brandName('BMN Lapas Jombang')
-            ->brandLogo(fn() => view('filament.admin.logo'))
-            ->brandLogoHeight('3rem')
+            // --- KONFIGURASI UI MODERN ---
+            ->colors([
+                'primary' => Color::Emerald, // Mengubah warna biru menjadi Emerald agar lebih modern & segar
+                'danger' => Color::Rose,
+                'info' => Color::Blue,
+                'success' => Color::Green,
+                'warning' => Color::Amber,
+                'gray' => Color::Slate,
+            ])
+            ->font('Poppins') // Menggunakan font modern (Pastikan koneksi internet aktif untuk memuat Google Fonts)
+            ->sidebarCollapsibleOnDesktop() // Sidebar bisa diciutkan agar ruang tabel lebih luas
+            ->databaseNotifications() // Mengaktifkan sistem notifikasi database
+            ->spa() // Single Page Application mode untuk perpindahan halaman super cepat tanpa reload full
+
+            // --- BRANDING LAPAS JOMBANG ---
+            ->brandName('SIMA Lapas Jombang')
+            ->brandLogo(fn() => view('filament.admin.logo')) // Memanggil view custom logo
+            ->brandLogoHeight('2.5rem')
             ->favicon(asset('images/logo.png'))
             // -------------------------------------------
 
-            ->colors([
-                'primary' => Color::Blue,
-            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -47,7 +58,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class, // Widget info dimatikan agar bersih
             ])
 
             // --- PLUGIN KEAMANAN (SHIELD) ---
@@ -64,8 +74,6 @@ class AdminPanelProvider extends PanelProvider
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
-
-                // Middleware Filament (Fix Namespace)
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
