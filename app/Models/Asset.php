@@ -20,4 +20,8 @@ class Asset extends Model
     {
         return $this->hasMany(Loan::class);
     }
+    public function maintenances(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Maintenance::class);
+    }
 }
