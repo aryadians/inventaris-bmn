@@ -8,6 +8,9 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
+    protected static ?int $sort = 1;
+    protected int | string | array $columnSpan = 'full';
+
     protected function getStats(): array
     {
         // Hitung total harga semua aset
@@ -24,20 +27,20 @@ class StatsOverview extends BaseWidget
                 ->color('primary'),
 
             // Kartu 2: Nilai Kekayaan Negara (Total Harga)
-            Stat::make('Total Nilai Aset', $formatRupiah)
+            Stat::make('Total Nilai Perolehan', $formatRupiah)
                 ->description('Akumulasi harga perolehan')
                 ->descriptionIcon('heroicon-m-banknotes')
-                ->color('success'), // Warna Hijau
+                ->color('success'),
 
-            // Kartu 3: Aset Rusak Berat (Warning)
+            // Kartu 3: Aset Rusak Berat
             Stat::make('Aset Rusak Berat', Asset::where('kondisi', 'RUSAK_BERAT')->count())
                 ->description('Perlu penghapusan segera')
                 ->descriptionIcon('heroicon-m-trash')
-                ->color('danger'), // Warna Merah
+                ->color('danger'),
 
-            Stat::make('Total Nilai Aset', function () {
-                // Menghitung langsung tanpa me-load semua objek ke memori
-                $total = \App\Models\Asset::all()->sum(fn($asset) => $asset->nilai_buku);
+            // Kartu 4: Nilai Buku
+            Stat::make('Total Nilai Buku', function () {
+                $total = Asset::all()->sum(fn($asset) => $asset->nilai_buku);
                 return 'Rp ' . number_format($total, 0, ',', '.');
             })
                 ->description('Estimasi nilai buku saat ini')

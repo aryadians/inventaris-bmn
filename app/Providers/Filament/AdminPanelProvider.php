@@ -11,6 +11,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\Pages\Dashboard; // Import Dashboard class
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -18,6 +19,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Pages\Dashboard as BaseDashboard;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -28,57 +30,48 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-
-            // --- KONFIGURASI UI MODERN ---
             ->colors([
-                'primary' => Color::Emerald, // Mengubah warna biru menjadi Emerald agar lebih modern & segar
+                'primary' => Color::Emerald,
                 'danger' => Color::Rose,
                 'info' => Color::Blue,
                 'success' => Color::Green,
                 'warning' => Color::Amber,
                 'gray' => Color::Slate,
             ])
-            ->font('Poppins') // Menggunakan font modern (Pastikan koneksi internet aktif untuk memuat Google Fonts)
-            ->sidebarCollapsibleOnDesktop() // Sidebar bisa diciutkan agar ruang tabel lebih luas
-            ->databaseNotifications() // Mengaktifkan sistem notifikasi database
-            ->spa() // Single Page Application mode untuk perpindahan halaman super cepat tanpa reload full
-
-            // --- BRANDING LAPAS JOMBANG ---
+            ->font('Poppins')
+            ->sidebarCollapsibleOnDesktop()
+            ->databaseNotifications()
+            ->spa()
             ->brandName('SIMA Lapas Jombang')
-            ->brandLogo(fn() => view('filament.admin.logo')) // Memanggil view custom logo
+            ->brandLogo(fn() => view('filament.admin.logo'))
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('images/logo.png'))
-            // -------------------------------------------
-
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                \App\Filament\Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+                \App\Filament\Widgets\StatsOverview::class,
+                \App\Filament\Widgets\AssetChart::class,
+                \App\Filament\Widgets\AssetConditionWidget::class,
+                \App\Filament\Widgets\LatestMutations::class,
+                \App\Filament\Widgets\LatestPeminjaman::class,
             ])
-
-            // --- PLUGIN KEAMANAN (SHIELD) ---
             ->plugins([
-                FilamentShieldPlugin::make(),
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
             ])
-            // -------------------------------
-
             ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
+                \Illuminate\Cookie\Middleware\EncryptCookies::class,
+                \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+                \Illuminate\Session\Middleware\StartSession::class,
+                \Illuminate\Session\Middleware\AuthenticateSession::class,
+                \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+                \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+                \Illuminate\Routing\Middleware\SubstituteBindings::class,
+                \Filament\Http\Middleware\DisableBladeIconComponents::class,
+                \Filament\Http\Middleware\DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                Authenticate::class,
+                \Filament\Http\Middleware\Authenticate::class,
             ]);
     }
 }

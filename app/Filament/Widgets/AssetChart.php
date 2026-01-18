@@ -7,14 +7,17 @@ use Filament\Widgets\ChartWidget;
 
 class AssetChart extends ChartWidget
 {
-    protected static ?string $heading = 'Statistik Kondisi Aset';
-
-    // Angka 2 artinya widget ini akan tampil di urutan kedua (di bawah kartu statistik)
+    // Urutan kedua setelah statistik
     protected static ?int $sort = 2;
+
+    protected int | string | array $columnSpan = 3;
+
+    protected static ?string $maxHeight = '300px';
+
+    protected static ?string $heading = 'Statistik Kondisi Aset';
 
     protected function getData(): array
     {
-        // 1. Ambil Data Jumlah dari Database
         $baik = Asset::where('kondisi', 'BAIK')->count();
         $rusakRingan = Asset::where('kondisi', 'RUSAK_RINGAN')->count();
         $rusakBerat = Asset::where('kondisi', 'RUSAK_BERAT')->count();
@@ -25,10 +28,11 @@ class AssetChart extends ChartWidget
                     'label' => 'Jumlah Aset',
                     'data' => [$baik, $rusakRingan, $rusakBerat],
                     'backgroundColor' => [
-                        '#10b981', // Hijau (Baik)
-                        '#f59e0b', // Kuning (Rusak Ringan)
-                        '#ef4444', // Merah (Rusak Berat)
+                        '#10b981', // Hijau
+                        '#f59e0b', // Kuning
+                        '#ef4444', // Merah
                     ],
+                    'hoverOffset' => 4,
                     'borderColor' => 'transparent',
                 ],
             ],
@@ -38,6 +42,15 @@ class AssetChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'doughnut'; // Jenis Chart: Donut
+        return 'doughnut';
     }
+
+    protected static ?array $options = [
+        'plugins' => [
+            'legend' => [
+                'display' => true,
+                'position' => 'bottom',
+            ],
+        ],
+    ];
 }
