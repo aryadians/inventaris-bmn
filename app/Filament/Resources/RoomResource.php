@@ -11,13 +11,41 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office';
+    protected static ?string $navigationLabel = 'Data Ruangan';
+    protected static ?string $pluralModelLabel = 'Data Ruangan';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view rooms');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create rooms');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()->can('edit rooms');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->can('delete rooms');
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return auth()->user()->can('delete rooms');
+    }
 
     public static function form(Form $form): Form
     {

@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
@@ -27,6 +28,31 @@ class AssetResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Aset BMN';
     protected static ?string $pluralModelLabel = 'Data Aset';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view assets');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create assets');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()->can('edit assets');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->can('delete assets');
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return auth()->user()->can('delete assets');
+    }
 
     public static function form(Form $form): Form
     {

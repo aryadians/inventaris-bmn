@@ -23,6 +23,31 @@ class LoanResource extends Resource
     protected static ?string $pluralModelLabel = 'Data Peminjaman';
     protected static ?string $navigationGroup = 'Transaksi'; // Biar ada grup menu baru
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view loans');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create loans');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()->can('edit loans');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->can('delete loans');
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return auth()->user()->can('delete loans');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -158,8 +183,8 @@ class LoanResource extends Resource
                     ->modalDescription('Apakah barang ini benar-benar sudah kembali dalam kondisi baik?')
                     ->modalSubmitActionLabel('Ya, Sudah Kembali')
 
-                    // Hanya muncul jika status masih DIPINJAM
-                    ->visible(fn(Loan $record) => $record->status === 'DIPINJAM')
+                    // Hanya muncul jika status masih DIPINJAM dan user punya izin
+                    ->visible(fn(Loan $record) => $record->status === 'DIPINJAM' && auth()->user()->can('approve loans'))
 
                     // Logic Update Database saat diklik
                     ->action(function (Loan $record) {
@@ -201,5 +226,13 @@ class LoanResource extends Resource
             'create' => Pages\CreateLoan::route('/create'),
             'edit' => Pages\EditLoan::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole('Peminjam')) {
+            return parent::getEloquentQuery()->where('user_id', auth()->id());
+        }
+        return parent::getEloquentQuery();
     }
 }
