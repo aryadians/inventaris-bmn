@@ -11,7 +11,7 @@ class AssetConditionWidget extends BaseWidget
 {
     protected static ?int $sort = 2; // Urutan ketiga, di sebelah chart
 
-    protected int | string | array $columnSpan = 5;
+    protected int | string | array $columnSpan = 6;
 
     protected static ?string $heading = 'Ringkasan Kondisi BMN';
 
