@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\AssetApiController;
+use App\Http\Controllers\ScanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +23,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cetak-label/{id}', [LaporanController::class, 'cetakLabel'])->name('cetak_label');
     Route::get('/cetak-sptjm/{id}', [LaporanController::class, 'cetakSptjm'])->name('cetak_sptjm');
     Route::get('/cetak-penyusutan', [LaporanController::class, 'cetakPenyusutan'])->name('cetak_penyusutan');
+    Route::get('/api/asset/find/{kode_barang}/{nup}', [AssetApiController::class, 'findByCode'])->name('api.asset.find');
+    Route::get('/scan', [ScanController::class, 'index'])->name('scan.index');
 });

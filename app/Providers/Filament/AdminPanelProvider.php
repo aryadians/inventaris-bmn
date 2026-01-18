@@ -6,6 +6,8 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -46,6 +48,13 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn() => view('filament.admin.logo'))
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('images/logo.png'))
+            ->navigationItems([
+                NavigationItem::make('Scan QR Code')
+                    ->url(fn (): string => route('scan.index'), shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-qr-code')
+                    ->group('Alat')
+                    ->sort(10),
+            ])
             // --- MENU SIDEBAR (RESOURCE) ---
             // Bagian ini WAJIB ada agar menu Aset, Room, dll muncul kembali
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
