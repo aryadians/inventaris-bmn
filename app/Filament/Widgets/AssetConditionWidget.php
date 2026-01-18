@@ -9,9 +9,9 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class AssetConditionWidget extends BaseWidget
 {
-    protected static ?int $sort = 3; // Urutan ketiga, di sebelah chart
+    protected static ?int $sort = 2; // Urutan ketiga, di sebelah chart
 
-    protected int | string | array $columnSpan = 3;
+    protected int | string | array $columnSpan = 'full';
 
     protected static ?string $heading = 'Ringkasan Kondisi BMN';
 

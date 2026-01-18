@@ -10,7 +10,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestMutations extends BaseWidget
 {
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 3;
     protected int | string | array $columnSpan = 'full';
     protected static ?string $heading = 'Riwayat Mutasi BMN Terbaru';
 

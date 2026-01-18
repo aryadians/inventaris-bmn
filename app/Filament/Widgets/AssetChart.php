@@ -10,7 +10,7 @@ class AssetChart extends ChartWidget
     // Urutan kedua setelah statistik
     protected static ?int $sort = 2;
 
-    protected int | string | array $columnSpan = 3;
+    protected int | string | array $columnSpan = 'full';
 
     protected static ?string $maxHeight = '300px';
 

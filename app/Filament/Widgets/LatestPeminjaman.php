@@ -14,7 +14,7 @@ class LatestPeminjaman extends BaseWidget
     protected int | string | array $columnSpan = 'full';
 
     // Urutan paling akhir (5)
-    protected static ?int $sort = 5;
+    protected static ?int $sort = 4;
 
     public function table(Table $table): Table
     {

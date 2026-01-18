@@ -46,10 +46,15 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn() => view('filament.admin.logo'))
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('images/logo.png'))
+            // --- MENU SIDEBAR (RESOURCE) ---
+            // Bagian ini WAJIB ada agar menu Aset, Room, dll muncul kembali
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                \App\Filament\Pages\Dashboard::class,
-            ])
+    \App\Filament\Pages\Dashboard::class, // Panggil dashboard custom kita
+        ])
             ->widgets([
+                // Urutan pendaftaran di sini juga menentukan kerapian
                 \App\Filament\Widgets\StatsOverview::class,
                 \App\Filament\Widgets\AssetChart::class,
                 \App\Filament\Widgets\AssetConditionWidget::class,
