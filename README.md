@@ -123,6 +123,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## 📑 Sitasi (Citation)
+
+Jika Anda menggunakan proyek ini untuk penelitian, tugas akhir, atau keperluan akademik lainnya, silakan kutip sebagai berikut:
+
+**Format APA:**
+Dian, A. (2026). SIMA: Sistem Informasi Manajemen Aset BMN berbasis Laravel & Filament (Versi 1.0.0) [Computer software]. https://github.com/aryadians/inventaris-bmn
+
+**Format BibTeX:**
+@software{Dian_SIMA_2026,
+  author = {Dian, Arya},
+  title = {SIMA: Sistem Informasi Manajemen Aset BMN berbasis Laravel & Filament},
+  url = {https://github.com/aryadians/inventaris-bmn},
+  version = {1.0.0},
+  year = {2026}
+}
+
+---
+
 ## Kontak
 
 Arya Dian - [@aransptr_](https://instagram.com/aransptr_) - aryadian003@gmail.com
