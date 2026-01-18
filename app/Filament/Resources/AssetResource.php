@@ -2,21 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use App\Exports\AssetsExport;
 use App\Filament\Resources\AssetResource\Pages;
 use App\Filament\Resources\AssetResource\RelationManagers;
 use App\Models\Asset;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Support\HtmlString;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
+use Maatwebsite\Excel\Facades\Excel;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AssetResource extends Resource
 {
@@ -180,9 +183,36 @@ class AssetResource extends Resource
                 Tables\Filters\SelectFilter::make('category_id')
                     ->label('Kategori')
                     ->relationship('category', 'nama_kategori'),
+                Tables\Filters\SelectFilter::make('room_id')
+                    ->label('Ruangan')
+                    ->relationship('room', 'nama_ruangan'),
+                Tables\Filters\SelectFilter::make('kondisi')
+                    ->label('Kondisi')
+                    ->options([
+                        'BAIK' => 'Baik',
+                        'RUSAK_RINGAN' => 'Rusak Ringan',
+                        'RUSAK_BERAT' => 'Rusak Berat',
+                    ]),
                 Tables\Filters\SelectFilter::make('is_external')
                     ->label('Position')
                     ->options(['0' => 'Internal', '1' => 'External']),
+            ])
+            ->headerActions([
+                Action::make('export_excel')
+                    ->label('Export Excel')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('success')
+                    ->action(function ($livewire) {
+                        $records = $livewire->getFilteredTableQuery()->get();
+                        if ($records->isEmpty()) {
+                            Notification::make()
+                                ->title('Tidak ada data untuk diekspor')
+                                ->warning()
+                                ->send();
+                            return;
+                        }
+                        return Excel::download(new AssetsExport($records), 'Laporan_Aset_BMN.xlsx');
+                    }),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([ // Action dikelompokkan agar rapi

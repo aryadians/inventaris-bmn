@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AssetResource\Pages;
 
 use App\Filament\Resources\AssetResource;
+use App\Exports\AssetsExport;
 use App\Imports\AssetsImport;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -18,6 +19,16 @@ class ListAssets extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('exportExcel')
+                ->label('Export Excel')
+                ->icon('heroicon-o-document-arrow-down')
+                ->action(function () {
+                    $query = $this->getFilteredTableQuery();
+                    $data = $query->get();
+                    return Excel::download(new AssetsExport($data), 'assets.xlsx');
+                })
+                ->color('primary'),
+
             // 1. Tombol Download Template Excel
             Actions\Action::make('downloadTemplate')
                 ->label('Download Template')
