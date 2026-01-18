@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Jika Anda menggunakan perangkat lunak ini, silakan merujuknya menggunakan metadata berikut."
+authors:
+  - family-names: "Dian"
+    given-names: "Arya"
+title: "SIMA: Sistem Informasi Manajemen Aset BMN berbasis Laravel & Filament"
+version: 1.0.0
+date-released: 2026-01-18
+url: "https://github.com/aryadians/inventaris-bmn"
+repository-code: "https://github.com/aryadians/inventaris-bmn"
+license: MIT
