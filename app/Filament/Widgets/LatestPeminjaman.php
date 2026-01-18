@@ -20,7 +20,7 @@ class LatestPeminjaman extends BaseWidget
     {
         return $table
             ->query(
-                Loan::query()->where('status', 'DIPINJAM')
+                Loan::query()->where('status', 'DIPINJAM')->with(['user', 'asset'])
             )
             ->defaultSort('tanggal_pinjam', 'desc')
             ->columns([

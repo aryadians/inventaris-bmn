@@ -18,9 +18,15 @@ class AssetChart extends ChartWidget
 
     protected function getData(): array
     {
-        $baik = Asset::where('kondisi', 'BAIK')->count();
-        $rusakRingan = Asset::where('kondisi', 'RUSAK_RINGAN')->count();
-        $rusakBerat = Asset::where('kondisi', 'RUSAK_BERAT')->count();
+        $data = Asset::query()
+            ->selectRaw('kondisi, count(*) as total')
+            ->groupBy('kondisi')
+            ->get()
+            ->pluck('total', 'kondisi');
+
+        $baik = $data->get('BAIK', 0);
+        $rusakRingan = $data->get('RUSAK_RINGAN', 0);
+        $rusakBerat = $data->get('RUSAK_BERAT', 0);
 
         return [
             'datasets' => [

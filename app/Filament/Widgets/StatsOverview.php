@@ -13,36 +13,50 @@ class StatsOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        // Hitung total harga semua aset
-        $totalAset = Asset::sum('harga_perolehan');
+        // Ambil semua aset dengan relasi kategori untuk menghindari N+1
+        $assets = Asset::with('category')->get();
 
-        // Format Rupiah Manual
-        $formatRupiah = 'Rp ' . number_format($totalAset, 0, ',', '.');
+        // Hitung total harga perolehan
+        $totalHargaPerolehan = $assets->sum('harga_perolehan');
+
+        // Hitung jumlah semua aset
+        $totalUnitAset = $assets->count();
+
+        // Hitung aset rusak berat
+        $asetRusakBerat = $assets->where('kondisi', 'RUSAK_BERAT')->count();
+
+        // Hitung total nilai buku
+        $totalNilaiBuku = $assets->sum(function ($asset) {
+            $harga = $asset->harga_perolehan;
+            $tanggalPerolehan = \Carbon\Carbon::parse($asset->tanggal_perolehan);
+            $masaManfaat = $asset->category->masa_manfaat ?? 1;
+
+            $usiaBarang = $tanggalPerolehan->diffInYears(now());
+            $penyusutanPerTahun = $harga / $masaManfaat;
+
+            $totalPenyusutan = $penyusutanPerTahun * $usiaBarang;
+            $nilaiBuku = $harga - $totalPenyusutan;
+
+            return $nilaiBuku > 0 ? $nilaiBuku : 0;
+        });
 
         return [
-            // Kartu 1: Total Unit Aset
-            Stat::make('Total Unit Aset', Asset::count())
+            Stat::make('Total Unit Aset', $totalUnitAset)
                 ->description('Semua barang yang terdaftar')
                 ->descriptionIcon('heroicon-m-cube')
                 ->color('primary'),
 
-            // Kartu 2: Nilai Kekayaan Negara (Total Harga)
-            Stat::make('Total Nilai Perolehan', $formatRupiah)
+            Stat::make('Total Nilai Perolehan', 'Rp ' . number_format($totalHargaPerolehan, 0, ',', '.'))
                 ->description('Akumulasi harga perolehan')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success'),
 
-            // Kartu 3: Aset Rusak Berat
-            Stat::make('Aset Rusak Berat', Asset::where('kondisi', 'RUSAK_BERAT')->count())
+            Stat::make('Aset Rusak Berat', $asetRusakBerat)
                 ->description('Perlu penghapusan segera')
                 ->descriptionIcon('heroicon-m-trash')
                 ->color('danger'),
 
-            // Kartu 4: Nilai Buku
-            Stat::make('Total Nilai Buku', function () {
-                $total = Asset::all()->sum(fn($asset) => $asset->nilai_buku);
-                return 'Rp ' . number_format($total, 0, ',', '.');
-            })
+            Stat::make('Total Nilai Buku', 'Rp ' . number_format($totalNilaiBuku, 0, ',', '.'))
                 ->description('Estimasi nilai buku saat ini')
                 ->descriptionIcon('heroicon-m-calculator')
                 ->color('success'),
