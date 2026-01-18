@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources\AdminResource\Widgets;
 
 use App\Models\Room;
 use Filament\Widgets\ChartWidget;
@@ -8,6 +8,8 @@ use Filament\Widgets\ChartWidget;
 class AssetChart extends ChartWidget
 {
     protected static ?string $heading = 'Sebaran Aset per Ruangan';
+
+    protected int | string | array $columnSpan = 'full';
 
     protected function getData(): array
     {
