@@ -25,6 +25,11 @@
 [![Filament](https://img.shields.io/badge/Filament-FAA04B?style=for-the-badge&logo=filament&logoColor=white)](https://filamentphp.com)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+<br>
+<a href="https://github.com/aryadians/inventaris-bmn/fork"><img src="https://img.shields.io/github/forks/aryadians/inventaris-bmn?style=social" alt="Forks"></a>
+<a href="https://github.com/aryadians/inventaris-bmn/stargazers"><img src="https://img.shields.io/github/stars/aryadians/inventaris-bmn?style=social" alt="Stars"></a>
+<a href="https://github.com/aryadians/inventaris-bmn/blob/main/LICENSE"><img src="https://img.shields.io/github/license/aryadians/inventaris-bmn?style=flat-square" alt="License"></a>
+<img src="https://img.shields.io/github/last-commit/aryadians/inventaris-bmn" alt="Last Commit">
 
 </div>
 
@@ -32,11 +37,17 @@
 
 Sistem Inventaris BMN adalah aplikasi yang dirancang untuk memudahkan pengelolaan aset dan barang milik negara. Aplikasi ini mencakup fitur-fitur seperti:
 
-*   **Manajemen Aset:** Menambah, mengubah, dan menghapus data aset.
-*   **Manajemen Ruangan:** Mengelola daftar ruangan tempat aset disimpan.
-*   **Peminjaman Aset:** Melacak peminjaman dan pengembalian aset.
-*   **Pemeliharaan Aset:** Mencatat riwayat pemeliharaan aset.
-*   **Laporan:** Menghasilkan laporan aset, peminjaman, dan usulan penghapusan.
+*   📋 **Manajemen Aset:** Menambah, mengubah, dan menghapus data aset.
+*   🚪 **Manajemen Ruangan:** Mengelola daftar ruangan tempat aset disimpan.
+*   📦 **Manajemen Kategori:** Mengelola kategori aset.
+*   🤝 **Peminjaman Aset:** Melacak peminjaman dan pengembalian aset.
+*   🛠️ **Pemeliharaan Aset:** Mencatat riwayat pemeliharaan aset.
+*   🚛 **Mutasi Aset:** Melacak perpindahan aset antar ruangan.
+*   📠 **Stock Opname:** Melakukan stock opname aset.
+*   큐알 **Cetak Label QR:** Mencetak label QR untuk setiap aset.
+*   📄 **Laporan:** Menghasilkan laporan aset, peminjaman, dan usulan penghapusan.
+*   📥 **Impor Data Aset:** Mengimpor data aset dari file Excel.
+*   📤 **Ekspor Data Aset:** Mengekspor data aset ke file Excel.
 
 ## Dibangun Dengan
 
