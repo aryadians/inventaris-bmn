@@ -16,7 +16,10 @@ Route::redirect('/', '/admin');
 
 // Grouping Route untuk Laporan agar lebih rapi
 Route::middleware(['auth'])->group(function () {
-    Route::get('/cetak-laporan', [LaporanController::class, 'cetak'])->name('cetak_laporan');
+        // Route untuk halaman laporan aset (HTML interaktif dengan filter)
+    Route::get('/laporan/aset', [LaporanController::class, 'laporanAset'])->name('laporan.aset');
+    // Route untuk mencetak laporan aset ke PDF (dengan filter)
+    Route::get('/laporan/aset/pdf', [LaporanController::class, 'cetakAset'])->name('laporan.aset.pdf');
     Route::get('/cetak-bukti/{id}', [LaporanController::class, 'cetakBukti'])->name('cetak_bukti');
     Route::get('/cetak-usulan', [LaporanController::class, 'cetakUsulan'])->name('cetak_usulan');
     // Tambahkan di dalam group middleware auth

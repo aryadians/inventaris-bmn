@@ -38,8 +38,8 @@
                 <td>{{ \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('d/m/Y') }}</td>
                 <td style="text-align: center">{{ $asset->category->masa_manfaat ?? '-' }} Thn</td>
                 <td class="text-right">{{ number_format($asset->harga_perolehan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($asset->harga_perolehan - $asset->nilai_buku, 0, ',', '.') }}</td>
-                <td class="text-right" style="font-weight: bold">{{ number_format($asset->nilai_buku, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($asset->akumulasi_penyusutan, 0, ',', '.') }}</td>
+                <td class="text-right" style="font-weight: bold">{{ number_format($asset->nilai_buku_dihitung, 0, ',', '.') }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -47,7 +47,7 @@
             <tr style="background-color: #eee; font-weight: bold;">
                 <td colspan="5" style="text-align: center">TOTAL NILAI</td>
                 <td class="text-right">{{ number_format($total_nilai_perolehan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($total_nilai_perolehan - $total_nilai_buku, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($total_akumulasi_penyusutan, 0, ',', '.') }}</td>
                 <td class="text-right">{{ number_format($total_nilai_buku, 0, ',', '.') }}</td>
             </tr>
         </tfoot>
