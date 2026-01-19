@@ -54,7 +54,7 @@ class LoansRelationManager extends RelationManager
                     ->color(fn(string $state): string => match ($state) {
                         'DIPINJAM' => 'warning',
                         'DIKEMBALIKAN' => 'success',
-                        'KEMBALI' => 'success',
+                        'KEMBALI' => 'success'
                     }),
             ])
             ->filters([

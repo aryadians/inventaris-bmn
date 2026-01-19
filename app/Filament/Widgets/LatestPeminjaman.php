@@ -30,7 +30,7 @@ class LatestPeminjaman extends BaseWidget
 
                 Tables\Columns\TextColumn::make('asset.nama_barang')
                     ->label('Barang')
-                    ->description(fn(Loan $record) => $record->asset->kode_barang),
+                    ->description(fn(Loan $record) => $record->asset?->kode_barang ?? '-'),
 
                 Tables\Columns\TextColumn::make('tanggal_pinjam')
                     ->date('d M Y')
