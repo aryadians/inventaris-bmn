@@ -1,31 +1,30 @@
-
 <p align="center">
   <a href="https://github.com/aryadians/inventaris-bmn">
     <img src="public/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Sistem Inventaris BMN</h3>
+  <h3 align="center">SIMA: Sistem Inventaris BMN</h3>
 
   <p align="center">
-    Aplikasi manajemen inventaris Barang Milik Negara (BMN) berbasis web yang dibangun menggunakan Laravel dan Filament.
+    Solusi manajemen inventaris Barang Milik Negara (BMN) berbasis web yang modern, cepat, dan akuntabel.
     <br />
-    <a href="https://github.com/aryadians/inventaris-bmn"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/aryadians/inventaris-bmn"><strong>Jelajahi Dokumentasi »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/aryadians/inventaris-bmn/issues">Report Bug</a>
+    <a href="https://github.com/aryadians/inventaris-bmn/issues">Laporkan Bug</a>
     ·
-    <a href="https://github.com/aryadians/inventaris-bmn/issues">Request Feature</a>
+    <a href="https://github.com/aryadians/inventaris-bmn/issues">Ajukan Fitur</a>
   </p>
 </p>
 
 <div align="center">
 
-[![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
-[![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![Filament](https://img.shields.io/badge/Filament-FAA04B?style=for-the-badge&logo=filament&logoColor=white)](https://filamentphp.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![Filament](https://img.shields.io/badge/Filament-v3-FAA04B?style=for-the-badge&logo=filament&logoColor=white)](https://filamentphp.com)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-<br>
+
 <a href="https://github.com/aryadians/inventaris-bmn/fork"><img src="https://img.shields.io/github/forks/aryadians/inventaris-bmn?style=social" alt="Forks"></a>
 <a href="https://github.com/aryadians/inventaris-bmn/stargazers"><img src="https://img.shields.io/github/stars/aryadians/inventaris-bmn?style=social" alt="Stars"></a>
 <a href="https://github.com/aryadians/inventaris-bmn/blob/main/LICENSE"><img src="https://img.shields.io/github/license/aryadians/inventaris-bmn?style=flat-square" alt="License"></a>
@@ -33,134 +32,104 @@
 
 </div>
 
-## Tentang Aplikasi
+---
 
-Sistem Inventaris BMN adalah aplikasi yang dirancang untuk memudahkan pengelolaan aset dan barang milik negara. Aplikasi ini mencakup fitur-fitur seperti:
+## 📖 Tentang Aplikasi
 
-*   📋 **Manajemen Aset:** Menambah, mengubah, dan menghapus data aset.
-*   🚪 **Manajemen Ruangan:** Mengelola daftar ruangan tempat aset disimpan.
-*   📦 **Manajemen Kategori:** Mengelola kategori aset.
-*   🤝 **Peminjaman Aset:** Melacak peminjaman dan pengembalian aset.
-*   🛠️ **Pemeliharaan Aset:** Mencatat riwayat pemeliharaan aset.
-*   🚛 **Mutasi Aset:** Melacak perpindahan aset antar ruangan.
-*   📠 **Stock Opname:** Melakukan stock opname aset.
-*   큐알 **Cetak Label QR:** Mencetak label QR untuk setiap aset.
-*   📄 **Laporan:** Menghasilkan laporan aset, peminjaman, dan usulan penghapusan.
-*   📥 **Impor Data Aset:** Mengimpor data aset dari file Excel.
-*   📤 **Ekspor Data Aset:** Mengekspor data aset ke file Excel.
+**SIMA (Sistem Informasi Manajemen Aset)** dirancang untuk mendigitalisasi pengelolaan aset negara di lingkungan Lapas Kelas IIB Jombang. Aplikasi ini berfokus pada kemudahan pemantauan riwayat barang, otomatisasi notifikasi, dan pelaporan keuangan aset yang akurat.
 
-## Dibangun Dengan
+### ✨ Fitur Utama (Terbaru)
 
-Aplikasi ini dibangun dengan menggunakan teknologi-teknologi berikut:
+* 🔔 **Notifikasi Otomatis:**
+    * Pengingat otomatis via Dashboard/Email kepada peminjam sebelum tanggal kembali tiba.
+    * Alert instan bagi Admin untuk permintaan peminjaman baru dan jadwal pemeliharaan rutin.
+* 📉 **Laporan Penyusutan Aset:** Perhitungan nilai buku secara otomatis menggunakan metode Garis Lurus (Straight Line) sesuai standar akuntansi BMN.
+* 🔍 **Advanced Filtering:** Filter aset dinamis berdasarkan kategori, ruangan, kondisi fisik, dan rentang waktu perolehan.
+* 📋 **Manajemen Siklus Aset:** Meliputi manajemen Ruangan, Kategori, Mutasi (perpindahan), dan Stock Opname berkala.
+* 🤝 **Peminjaman & Pemeliharaan:** Pelacakan status peminjaman aktif dan pencatatan riwayat servis vendor.
+* 📠 **Labeling & QR:** Generasi label QR unik dan integrasi pemindaian QR untuk identifikasi cepat.
+* 📥 **Data Portability:** Impor dan Ekspor data aset secara massal melalui file Excel.
 
-*   [Laravel](https://laravel.com/)
-*   [Filament](https://filamentphp.com/)
-*   [PHP](https://www.php.net/)
-*   [MySQL](https://www.mysql.com/)
+---
 
-## Memulai
+## 🛠️ Stack Teknologi
 
-Untuk menjalankan aplikasi ini secara lokal, ikuti langkah-langkah berikut.
+* **Framework:** [Laravel 11](https://laravel.com/)
+* **Admin Panel:** [Filament v3](https://filamentphp.com/)
+* **UI/Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Database:** [MySQL 8.0](https://www.mysql.com/)
+
+---
+
+## 🚀 Memulai
 
 ### Prasyarat
+* PHP >= 8.2
+* Composer
+* Node.js & NPM
+* Database MySQL
 
-Pastikan Anda telah menginstal perangkat lunak berikut:
+### Instalasi Langkah-demi-Langkah
 
-*   PHP >= 8.2
-*   Composer
-*   Node.js
-*   NPM
-
-### Instalasi
-
-1.  Clone repositori
+1.  **Clone Repositori**
     ```sh
-    git clone https://github.com/aryadians/inventaris-bmn.git
-    ```
-2.  Masuk ke direktori proyek
-    ```sh
+    git clone [https://github.com/aryadians/inventaris-bmn.git](https://github.com/aryadians/inventaris-bmn.git)
     cd inventaris-bmn
     ```
-3.  Instal dependensi PHP
+
+2.  **Instalasi Dependensi**
     ```sh
     composer install
+    npm install && npm run build
     ```
-4.  Instal dependensi JavaScript
-    ```sh
-    npm install
-    ```
-5.  Salin file `.env.example` menjadi `.env`
+
+3.  **Konfigurasi Environment**
     ```sh
     cp .env.example .env
-    ```
-6.  Buat kunci aplikasi
-    ```sh
     php artisan key:generate
     ```
-7.  Jalankan migrasi database
+    *Sesuaikan `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` di file `.env`.*
+
+4.  **Migrasi & Seed Database**
     ```sh
-    php artisan migrate
+    php artisan migrate --seed
     ```
-8.  Jalankan server pengembangan
+
+5.  **Optimasi & Tautan Storage**
+    ```sh
+    php artisan storage:link
+    php artisan filament:optimize
+    ```
+
+6.  **Jalankan Aplikasi**
     ```sh
     php artisan serve
     ```
 
-## Lisensi
+---
 
-Proyek ini dilisensikan di bawah Lisensi MIT.
+## 📉 Metodologi Penyusutan
+Aplikasi ini menggunakan perhitungan penyusutan otomatis berdasarkan Masa Manfaat yang ditentukan pada setiap kategori barang:
 
-```
-MIT License
-
-Copyright (c) 2026 Arya Dian
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-## 📑 Sitasi (Citation)
-
-Jika Anda menggunakan proyek ini untuk penelitian, tugas akhir, atau keperluan akademik lainnya, silakan kutip sebagai berikut:
-
-**Format APA:**
-Dian, A. (2026). SIMA: Sistem Informasi Manajemen Aset BMN berbasis Laravel & Filament (Versi 1.0.0) [Computer software]. https://github.com/aryadians/inventaris-bmn
-
-**Format BibTeX:**
-@software{Dian_SIMA_2026,
-  author = {Dian, Arya},
-  title = {SIMA: Sistem Informasi Manajemen Aset BMN berbasis Laravel & Filament},
-  url = {https://github.com/aryadians/inventaris-bmn},
-  version = {1.0.0},
-  year = {2026}
-}
+$$Penyusutan\ Per\ Tahun = \frac{Harga\ Perolehan}{Masa\ Manfaat}$$
 
 ---
 
-## Kontak
+## 📑 Sitasi (Citation)
 
-Arya Dian - [@aransptr_](https://instagram.com/aransptr_) - aryadian003@gmail.com
+Jika Anda menggunakan proyek ini untuk keperluan akademik, silakan kutip sebagai berikut:
 
-Project Link: [https://github.com/aryadians/inventaris-bmn](https://github.com/aryadians/inventaris-bmn)
+**Format APA:**
+> Dian, A. (2026). *SIMA: Sistem Informasi Manajemen Aset BMN berbasis Laravel & Filament* (Versi 1.1.0) [Computer software]. https://github.com/aryadians/inventaris-bmn
 
-[php-shield]: https://img.shields.io/badge/PHP-8.2%2B-blue?style=for-the-badge
-[php-url]: https://www.php.net/
-[laravel-shield]: https://img.shields.io/badge/Laravel-12.x-orange?style=for-the-badge
-[laravel-url]: https://laravel.com/
-[filament-shield]: https://img.shields.io/badge/Filament-3.2-orange?style=for-the-badge
-[filament-url]: https://filamentphp.com/
+---
+
+## ✉️ Kontak
+
+**Arya Dian**
+* Instagram: [@aransptr_](https://instagram.com/aransptr_)
+* Email: [aryadian003@gmail.com](mailto:aryadian003@gmail.com)
+* GitHub: [aryadians](https://github.com/aryadians)
+
+---
+<p align="center"> Dilisensikan di bawah <strong>Lisensi MIT</strong> </p>
