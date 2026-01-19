@@ -153,6 +153,7 @@ class LoanResource extends Resource
                     ->color(fn(string $state): string => match ($state) {
                         'DIPINJAM' => 'warning',      // Kuning
                         'DIKEMBALIKAN' => 'success',  // Hijau
+                        'KEMBALI' => 'success',
                     }),
             ])
             ->defaultSort('created_at', 'desc')
