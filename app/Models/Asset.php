@@ -7,12 +7,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 class Asset extends Model
 {
-    use SoftDeletes; // Mengaktifkan fitur hapus sementara (sampah)
+    use SoftDeletes, LogsActivity; // Mengaktifkan soft delete & audit log
 
     // Mengizinkan semua kolom diisi (Mass Assignment)
     protected $guarded = [];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']) // Catat perubahan semua kolom
+            ->logOnlyDirty() // Hanya catat kolom yang berubah
+            ->dontSubmitEmptyLogs(); // Jangan catat jika tidak ada perubahan
+    }
 
     /**
      * Logic Otomatis (Booted):
