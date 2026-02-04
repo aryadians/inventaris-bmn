@@ -22,7 +22,7 @@ class Procurement extends Model
     protected static function booted()
     {
         static::creating(function ($procurement) {
-            if (!$procurement->user_id) {
+            if (!$procurement->user_id && auth()->check()) {
                 $procurement->user_id = auth()->id();
             }
         });

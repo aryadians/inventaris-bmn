@@ -19,7 +19,6 @@ class ProcurementResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
     protected static ?string $navigationLabel = 'Pengadaan';
-    protected static ?string $navigationGroup = 'Procurement';
 
     public static function form(Form $form): Form
     {
