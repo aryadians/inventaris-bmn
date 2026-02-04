@@ -31,7 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->darkMode(false)
+            ->login(\App\Filament\Auth\Login::class)
             ->colors([
                 'primary' => Color::Emerald,
                 'danger' => Color::Rose,
@@ -44,6 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
             ->spa()
+            ->theme(asset('css/filament/admin/theme.css'))
             ->brandName('SIMA Lapas Jombang')
             ->brandLogo(fn() => view('filament.admin.logo'))
             ->brandLogoHeight('2.5rem')
