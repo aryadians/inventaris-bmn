@@ -11,44 +11,41 @@ class ProcurementApprovalNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    protected $procurement;
+    protected $action;
+
+    public function __construct($procurement, $action)
     {
-        //
+        $this->procurement = $procurement;
+        $this->action = $action;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
+        $status = $this->action === 'approved' ? 'Disetujui' : 'Ditolak';
+        $color = $this->action === 'approved' ? 'success' : 'error';
+
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+                    ->subject("[SIMA] Pengadaan {$status}")
+                    ->greeting("Hello, {$notifiable->name}!")
+                    ->line("Pengadaan Anda dengan nomor **{$this->procurement->no_pengajuan}** telah **{$status}**.")
+                    ->line("Tanggal Pengajuan: {$this->procurement->tgl_pengajuan->format('d M Y')}")
+                    ->line("Total Estimasi: Rp " . number_format($this->procurement->total_estimasi, 0, ',', '.'))
+                    ->action('Lihat Detail', url('/admin/procurements/' . $this->procurement->id . '/edit'))
+                    ->line('Terima kasih telah menggunakan sistem SIMA!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'procurement_id' => $this->procurement->id,
+            'no_pengajuan' => $this->procurement->no_pengajuan,
+            'action' => $this->action,
         ];
     }
 }

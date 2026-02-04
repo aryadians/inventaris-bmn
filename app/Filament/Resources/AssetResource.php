@@ -282,6 +282,16 @@ class AssetResource extends Resource
                         ->icon('heroicon-o-printer')
                         ->color('success')
                         ->action(fn(Collection $records) => static::exportPdf($records)),
+                    Tables\Actions\BulkAction::make('export_excel')
+                        ->label('Export ke Excel')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->color('success')
+                        ->action(function (Collection $records) {
+                            return \Maatwebsite\Excel\Facades\Excel::download(
+                                new \App\Exports\AssetsExport($records),
+                                'assets_' . now()->format('Y-m-d_His') . '.xlsx'
+                            );
+                        }),
                     Tables\Actions\DeleteBulkAction::make()->label('Arsipkan Data'),
                 ]),
             ])

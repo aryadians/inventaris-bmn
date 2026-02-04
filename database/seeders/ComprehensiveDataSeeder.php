@@ -65,15 +65,15 @@ class ComprehensiveDataSeeder extends Seeder
 
         // Create sample rooms
         $rooms = [
-            ['nama_ruangan' => 'Kantor Kepala', 'penanggung_jawab' => 'Kepala Lapas'],
-            ['nama_ruangan' => 'Ruang TU', 'penanggung_jawab' => 'Kasubag TU'],
-            ['nama_ruangan' => 'Ruang Aula', 'penanggung_jawab' => 'Staff Umum'],
-            ['nama_ruangan' => 'Ruang Operator', 'penanggung_jawab' => 'Operator IT'],
-            ['nama_ruangan' => 'Gudang', 'penanggung_jawab' => 'Petugas Gudang'],
+            ['kode_ruangan' => 'R-001', 'nama_ruangan' => 'Kantor Kepala', 'penanggung_jawab' => 'Kepala Lapas'],
+            ['kode_ruangan' => 'R-002', 'nama_ruangan' => 'Ruang TU', 'penanggung_jawab' => 'Kasubag TU'],
+            ['kode_ruangan' => 'R-003', 'nama_ruangan' => 'Ruang Aula', 'penanggung_jawab' => 'Staff Umum'],
+            ['kode_ruangan' => 'R-004', 'nama_ruangan' => 'Ruang Operator', 'penanggung_jawab' => 'Operator IT'],
+            ['kode_ruangan' => 'R-005', 'nama_ruangan' => 'Gudang', 'penanggung_jawab' => 'Petugas Gudang'],
         ];
 
         foreach ($rooms as $room) {
-            Room::firstOrCreate(['nama_ruangan' => $room['nama_ruangan']], $room);
+            Room::firstOrCreate(['kode_ruangan' => $room['kode_ruangan']], $room);
         }
 
         // Create 60 realistic assets

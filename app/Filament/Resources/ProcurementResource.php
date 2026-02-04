@@ -139,6 +139,15 @@ class ProcurementResource extends Resource
                     ->visible(fn (Procurement $record) => $record->status === 'pending')
                     ->action(function (Procurement $record) {
                         $record->update(['status' => 'approved']);
+                        
+                        // Send email notification
+                        $record->user->notify(new \App\Notifications\ProcurementApprovalNotification($record, 'approved'));
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title('Pengadaan Disetujui')
+                            ->body('Email notifikasi telah dikirim ke pengaju.')
+                            ->success()
+                            ->send();
                     }),
                 Tables\Actions\Action::make('reject')
                     ->label('Tolak')
@@ -148,6 +157,15 @@ class ProcurementResource extends Resource
                     ->visible(fn (Procurement $record) => $record->status === 'pending')
                     ->action(function (Procurement $record) {
                         $record->update(['status' => 'rejected']);
+                        
+                        // Send email notification
+                        $record->user->notify(new \App\Notifications\ProcurementApprovalNotification($record, 'rejected'));
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title('Pengadaan Ditolak')
+                            ->body('Email notifikasi telah dikirim ke pengaju.')
+                            ->warning()
+                            ->send();
                     }),
                 Tables\Actions\Action::make('receive')
                     ->label('Terima & Buat Aset')
