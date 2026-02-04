@@ -45,6 +45,10 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
             ->spa()
+            ->renderHook(
+                'panels::head.end',
+                fn () => view('filament.pwa-head')
+            )
             ->theme(asset('css/filament/admin/theme.css'))
             ->brandName('SIMA Lapas Jombang')
             ->brandLogo(fn() => view('filament.admin.logo'))
