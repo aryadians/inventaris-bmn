@@ -49,6 +49,10 @@
 * 🤝 **Peminjaman & Pemeliharaan:** Pelacakan status peminjaman aktif dan pencatatan riwayat servis vendor.
 * 📠 **Labeling & QR:** Generasi label QR unik dan integrasi pemindaian QR untuk identifikasi cepat.
 * 📥 **Data Portability:** Impor dan Ekspor data aset secara massal melalui file Excel.
+* 📱 **PWA (Aplikasi Mobile):** Install SIMA ke Home Screen HP Android/iOS tanpa perlu masuk App Store. Mendukung akses cepat dan mode offline terbatas.
+* 🛡️ **Audit Log Sistem:** Mencatat siapa melakukan apa, kapan, dan di mana pada data Aset & Peminjaman untuk keamanan maksimal.
+* 🖨️ **Cetak Label QR (Bulk):** Dukungan printer label thermal dengan kemampuan cetak banyak stiker sekaligus.
+* 💾 **Backup Otomatis:** database terjadwal harian untuk mencegah kehilangan data kritis (memerlukan konfigurasi cron di server).
 
 ---
 
