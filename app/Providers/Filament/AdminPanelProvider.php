@@ -34,12 +34,12 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(true)
             ->login(\App\Filament\Auth\Login::class)
             ->colors([
-                'primary' => Color::Emerald,
-                'danger' => Color::Rose,
-                'info' => Color::Blue,
-                'success' => Color::Green,
+                'primary' => Color::Blue,
+                'danger' => Color::Red,
+                'info' => Color::Sky,
+                'success' => Color::Emerald,
                 'warning' => Color::Amber,
-                'gray' => Color::Slate,
+                'gray' => Color::Zinc,
             ])
             ->font('Poppins')
             ->sidebarCollapsibleOnDesktop()

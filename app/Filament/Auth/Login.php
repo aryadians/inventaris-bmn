@@ -2,19 +2,47 @@
 
 namespace App\Filament\Auth;
 
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Pages\Auth\Login as BaseLogin;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Login extends BaseLogin
 {
-    public function getHeading(): string|Htmlable
+    public function form(Form $form): Form
     {
-        return 'Selamat Datang';
+        return $form
+            ->schema([
+                TextInput::make('email')
+                    ->label('Email')
+                    ->email()
+                    ->required()
+                    ->autocomplete()
+                    ->autofocus()
+                    ->placeholder('nama@lapas.go.id')
+                    ->extraInputAttributes(['tabindex' => 1]),
+                TextInput::make('password')
+                    ->label('Password')
+                    ->password()
+                    ->required()
+                    ->placeholder('Masukkan password Anda')
+                    ->extraInputAttributes(['tabindex' => 2]),
+                Checkbox::make('remember')
+                    ->label('Ingat Saya')
+                    ->extraAttributes(['tabindex' => 3]),
+            ])
+            ->statePath('data');
     }
 
-    public function getSubheading(): string|Htmlable|null
+    public function getHeading(): string|Htmlable
     {
-        return 'Silakan masuk untuk mengelola inventaris.';
+        return 'Selamat Datang di SIMA';
+    }
+
+    public function getSubHeading(): string|Htmlable|null
+    {
+        return 'Sistem Informasi Manajemen Aset - Lapas Jombang';
     }
 
     public function getView(): string
