@@ -11,3 +11,7 @@ Artisan::command('inspire', function () {
 // Menjadwalkan command untuk berjalan setiap hari
 Schedule::command('app:kirim-pengingat-jatuh-tempo')->daily();
 Schedule::command('app:kirim-pengingat-pemeliharaan')->daily();
+
+// Backup Database & Files
+Schedule::command('backup:clean')->daily()->at('01:00');
+Schedule::command('backup:run')->daily()->at('01:30');
