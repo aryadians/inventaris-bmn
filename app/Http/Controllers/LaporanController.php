@@ -119,6 +119,31 @@ class LaporanController extends Controller
         return $pdf->stream('label-qr-' . $asset->nup . '.pdf');
     }
 
+    public function cetakLabelBulk(Request $request)
+    {
+        // Ambil ID dari query string ?ids=1,2,3
+        $ids = explode(',', $request->query('ids'));
+        
+        $assets = \App\Models\Asset::whereIn('id', $ids)->get();
+
+        if ($assets->isEmpty()) {
+            return abort(404, 'Data aset tidak ditemukan');
+        }
+
+        // Ukuran per label (50mm x 30mm) dalam point (1mm = 2.83pt)
+        // 50mm = 141.7pt, 30mm = 85pt. Kertas thermal biasanya continuous.
+        // Kita set ukuran halaman agar muat SATU label per halaman PDF (untuk printer thermal)
+        // atau Layout Grid jika print di A4.
+        // Disini kita asumsi printer THERMAL (Page size = Sticker size).
+        
+        $customPaper = [0, 0, 150, 100]; // Sesuaikan dengan label single (5cm x 3.5cm)
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.label_qr_bulk', ['assets' => $assets])
+            ->setPaper($customPaper);
+
+        return $pdf->stream('Label-QR-Bulk.pdf');
+    }
+
     public function cetakPenyusutan()
     {
         // Mengambil semua aset yang memiliki kategori (untuk masa manfaat)

@@ -24,6 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cetak-usulan', [LaporanController::class, 'cetakUsulan'])->name('cetak_usulan');
     // Tambahkan di dalam group middleware auth
     Route::get('/cetak-label/{id}', [LaporanController::class, 'cetakLabel'])->name('cetak_label');
+    Route::get('/cetak-label-bulk', [LaporanController::class, 'cetakLabelBulk'])->name('cetak_label_bulk');
     Route::get('/cetak-sptjm/{id}', [LaporanController::class, 'cetakSptjm'])->name('cetak_sptjm');
     Route::get('/cetak-penyusutan', [LaporanController::class, 'cetakPenyusutan'])->name('cetak_penyusutan');
     Route::get('/api/asset/find/{kode_barang}/{nup}', [AssetApiController::class, 'findByCode'])->name('api.asset.find');

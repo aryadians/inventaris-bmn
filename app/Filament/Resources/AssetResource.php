@@ -266,6 +266,17 @@ class AssetResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('cetak_label_bulk')
+                        ->label('Cetak Label QR (Terpilih)')
+                        ->icon('heroicon-o-qr-code')
+                        ->color('info')
+                        ->action(function (Collection $records) {
+                            // Redirect ke route dengan query paramenter ids=1,2,3
+                            $ids = $records->pluck('id')->implode(',');
+                            return redirect()->route('cetak_label_bulk', ['ids' => $ids]);
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
                     Tables\Actions\BulkAction::make('export_pdf')
                         ->label('Cetak Laporan PDF')
                         ->icon('heroicon-o-printer')
