@@ -2,7 +2,7 @@
     <!-- Left Side: Image/Branding -->
     <div class="hidden lg:flex w-1/2 bg-slate-900 relative overflow-hidden items-center justify-center">
         <!-- Professional Abstract Background (Static) -->
-        <div class="absolute inset-0 bg-gradient-to-br from-slate-800 to-gray-900"></div>
+        <div class="absolute inset-0 bg-linear-to-br from-slate-800 to-gray-900"></div>
         <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
 
         <div class="relative z-10 p-12 text-white text-center">

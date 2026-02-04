@@ -31,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->darkMode(false)
+            ->darkMode(true)
             ->login(\App\Filament\Auth\Login::class)
             ->colors([
                 'primary' => Color::Emerald,
