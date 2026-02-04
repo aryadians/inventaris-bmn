@@ -22,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Loan::observe(LoanObserver::class);
+        \App\Models\Maintenance::observe(\App\Observers\MaintenanceObserver::class);
     }
 }

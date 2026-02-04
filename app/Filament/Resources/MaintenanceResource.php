@@ -26,33 +26,63 @@ class MaintenanceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('asset_id')
-                    ->relationship('asset', 'nama_barang')
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->label('Aset yang Diservis'),
-                Forms\Components\DatePicker::make('tanggal_servis')
-                    ->required(),
-                Forms\Components\Textarea::make('masalah')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('tindakan')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('vendor')
-                    ->label('Vendor/Toko Servis'),
-                Forms\Components\TextInput::make('biaya')
-                    ->numeric()
-                    ->prefix('Rp')
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'PROSES' => 'Dalam Proses',
-                        'SELESAI' => 'Selesai',
+                Forms\Components\Section::make('Laporan Kerusakan')
+                    ->schema([
+                        Forms\Components\Select::make('asset_id')
+                            ->relationship('asset', 'nama_barang')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->label('Aset yang Bermasalah'),
+                        Forms\Components\Select::make('pelapor_id')
+                            ->relationship('pelapor', 'name')
+                            ->default(auth()->id())
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->label('Pelapor'),
+                        Forms\Components\DatePicker::make('tanggal_lapor')
+                            ->default(now())
+                            ->required(),
+                        Forms\Components\Textarea::make('masalah')
+                            ->label('Deskripsi Masalah / Kerusakan')
+                            ->required()
+                            ->columnSpanFull(),
+                        Forms\Components\FileUpload::make('bukti_foto')
+                            ->image()
+                            ->directory('maintenance-proofs')
+                            ->columnSpanFull(),
+                    ])->columns(2),
+                
+                Forms\Components\Section::make('Tindak Lanjut Perbaikan')
+                    ->description('Diisi oleh teknisi atau admin saat perbaikan dilakukan.')
+                    ->schema([
+                        Forms\Components\Grid::make(2)->schema([
+                            Forms\Components\Select::make('status')
+                                ->options([
+                                    'pending' => 'Menunggu (Pending)',
+                                    'processing' => 'Sedang Diproses',
+                                    'completed' => 'Selesai (Fixed)',
+                                    'unrepairable' => 'Rusak Berat (Tidak Bisa Diperbaiki)'
+                                ])
+                                ->default('pending')
+                                ->required(),
+                            Forms\Components\DatePicker::make('tanggal_selesai'),
+                        ]),
+                        Forms\Components\Textarea::make('tindakan')
+                            ->label('Tindakan Perbaikan')
+                            ->columnSpanFull(),
+                        Forms\Components\Grid::make(2)->schema([
+                            Forms\Components\TextInput::make('vendor')
+                                ->label('Nama Vendor / Teknisi'),
+                            Forms\Components\TextInput::make('biaya')
+                                ->numeric()
+                                ->prefix('Rp')
+                                ->default(0),
+                        ]),
                     ])
-                    ->required()
-                    ->default('PROSES'),
+                    ->collapsible()
+                    ->collapsed(fn ($record) => $record === null), // Auto collapse on create
             ]);
     }
 
@@ -60,30 +90,43 @@ class MaintenanceResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('bukti_foto')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('asset.nama_barang')
-                    ->label('Nama Aset')
+                    ->label('Aset')
                     ->searchable()
+                    ->sortable()
+                    ->description(fn (Maintenance $record): string => $record->asset->kode_barang ?? '-'),
+                Tables\Columns\TextColumn::make('pelapor.name')
+                    ->label('Pelapor')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tanggal_servis')
+                Tables\Columns\TextColumn::make('tanggal_lapor')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('masalah')
-                    ->limit(40)
-                    ->wrap(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'gray',
+                        'processing' => 'warning',
+                        'completed' => 'success',
+                        'unrepairable' => 'danger',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('biaya')
                     ->money('IDR')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'PROSES' => 'warning',
-                        'SELESAI' => 'success',
-                        default => 'gray',
-                    }),
+            ])
+            ->defaults([
+                Tables\Columns\TextColumn::make('tanggal_lapor')->sortable('desc'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'processing' => 'Processing',
+                        'completed' => 'Completed',
+                        'unrepairable' => 'Rusak Berat',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
