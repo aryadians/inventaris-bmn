@@ -44,6 +44,17 @@ class AdminPanelProvider extends PanelProvider
             ->font('Poppins')
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
+            ->navigationGroups([
+                NavigationGroup::make()
+                     ->label('Transaksi')
+                     ->collapsible(false),
+                NavigationGroup::make()
+                     ->label('Alat')
+                     ->collapsible(false),
+                NavigationGroup::make()
+                     ->label('Administrasi')
+                     ->collapsible(false),
+            ])
             ->spa()
             ->renderHook(
                 'panels::head.end',

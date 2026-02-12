@@ -166,6 +166,7 @@ class AssetResource extends Resource
     {
         return $table
             ->deferLoading()
+            ->checkIfRecordIsSelectableUsing(fn () => true) // Speed up checkbox rendering
             ->columns([
                 Tables\Columns\ImageColumn::make('foto')
                     ->label('')
