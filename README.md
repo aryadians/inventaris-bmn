@@ -1,297 +1,196 @@
 <p align="center">
   <a href="https://github.com/aryadians/inventaris-bmn">
-    <img src="public/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="public/images/logo.png" alt="Logo" width="120" height="120">
   </a>
 
-  <h3 align="center">SIMA: Sistem Inventaris BMN</h3>
+  <h1 align="center">SIMA: Sistem Informasi Manajemen Aset BMN</h1>
 
   <p align="center">
-    Solusi enterprise manajemen inventaris Barang Milik Negara (BMN) berbasis web yang modern, cepat, dan akuntabel.
-    <br />
-    <a href="https://github.com/aryadians/inventaris-bmn"><strong>Jelajahi Dokumentasi »</strong></a>
+    <strong>Enterprise-Grade Asset Management Solution</strong><br />
+    Platform digital terintegrasi untuk pengelolaan, pemantauan, dan akuntansi Barang Milik Negara (BMN) di instansi pemerintah.
     <br />
     <br />
     <a href="https://github.com/aryadians/inventaris-bmn/issues">Laporkan Bug</a>
     ·
     <a href="https://github.com/aryadians/inventaris-bmn/issues">Ajukan Fitur</a>
+    ·
+    <a href="mailto:aryadian003@gmail.com">Kontak Pengembang</a>
   </p>
 </p>
 
 <div align="center">
 
-[![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
-[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![Filament](https://img.shields.io/badge/Filament-v3-FAA04B?style=for-the-badge&logo=filament&logoColor=white)](https://filamentphp.com)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![Laravel Version](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![Filament Version](https://img.shields.io/badge/Filament-v3-FAA04B?style=for-the-badge&logo=filament&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 
-<a href="https://github.com/aryadians/inventaris-bmn/fork"><img src="https://img.shields.io/github/forks/aryadians/inventaris-bmn?style=social" alt="Forks"></a>
-<a href="https://github.com/aryadians/inventaris-bmn/stargazers"><img src="https://img.shields.io/github/stars/aryadians/inventaris-bmn?style=social" alt="Stars"></a>
-<a href="https://github.com/aryadians/inventaris-bmn/blob/main/LICENSE"><img src="https://img.shields.io/github/license/aryadians/inventaris-bmn?style=flat-square" alt="License"></a>
-<img src="https://img.shields.io/github/last-commit/aryadians/inventaris-bmn" alt="Last Commit">
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Stars](https://img.shields.io/github/stars/aryadians/inventaris-bmn?style=flat-square)](https://github.com/aryadians/inventaris-bmn/stargazers)
+![PWA Ready](https://img.shields.io/badge/PWA-Ready-orange?style=flat-square&logo=pwa)
+![Optimization](https://img.shields.io/badge/Performance-High-brightgreen?style=flat-square)
 
 </div>
 
 ---
 
-## 📖 Tentang Aplikasi
+## 📖 Deskripsi Proyek
 
-**SIMA (Sistem Informasi Manajemen Aset)** adalah solusi enterprise-grade untuk mendigitalisasi pengelolaan aset negara di lingkungan Lapas Kelas IIB Jombang. Aplikasi ini dilengkapi dengan fitur-fitur advanced seperti workflow automation, role-based access control, REST API, dan real-time analytics dashboard.
+**SIMA (Sistem Informasi Manajemen Aset)** adalah solusi transformasi digital yang dirancang untuk menggantikan pencatatan inventaris manual menjadi sistem otomatis yang akurat. Dikembangkan dengan teknologi terbaru, SIMA menangani seluruh siklus hidup aset BMN—mulai dari perencanaan pengadaan, penggunaan sehari-hari, pemeliharaan rutin, hingga proses penghapusan aset dari daftar negara.
 
-### ✨ Fitur Utama
-
-#### 🎯 **Core Features**
-* **Manajemen Aset Lengkap:** CRUD aset dengan tracking history lengkap, foto, dan QR code unik
-* **Digital Stock Opname:** Sistem stock opname digital dengan barcode scanner dan laporan discrepancy
-* **Peminjaman Aset:** Workflow peminjaman dengan approval, tracking, dan reminder otomatis
-* **Pemeliharaan & Servis:** Ticketing system untuk maintenance dengan vendor tracking dan biaya
-* **Mutasi Aset:** Transfer aset antar ruangan dengan audit trail lengkap
-* **Penyusutan Otomatis:** Perhitungan depresiasi menggunakan metode Straight Line sesuai standar BMN
-
-#### 🔐 **Security & Access Control**
-* **Role-Based Access Control (RBAC):** 3 roles (Manager, Staff, Teknisi) dengan permissions granular
-* **Shield Integration:** Filament Shield untuk policy management
-* **Audit Log:** Complete audit trail untuk semua perubahan data kritis
-
-#### 🛒 **Procurement Workflow**
-* **Pengadaan Digital:** Sistem pengajuan procurement dengan multi-approval
-* **Status Tracking:** Real-time tracking dari draft hingga received
-* **Auto Asset Creation:** Automatic conversion procurement item to assets
-* **Email Notifications:** Notifikasi otomatis approval/rejection ke pengaju
-
-#### 📊 **Analytics & Reporting**
-* **Executive Dashboard:** 
-  - Total Asset Value Widget (4 stats cards)
-  - Procurement Trend Chart (6-month historical data)
-  - Maintenance Cost Analysis (monthly comparison)
-* **Advanced Filters:** Filter dinamis berdasarkan kategori, ruangan, kondisi, tanggal
-* **Excel Export:** Bulk export data dengan custom columns
-* **PDF Reports:** Generate laporan aset dengan QR code labels
-
-#### 🌐 **Integration & API**
-* **RESTful API:** 3 public endpoints (list assets, detail, search by QR)
-* **Laravel Sanctum:** Token-based authentication untuk API
-* **Email Notifications:** Professional email templates untuk procurement workflow
-* **Webhook Ready:** Architecture siap untuk webhook integration
-
-#### 📱 **Mobile & PWA**
-* **Progressive Web App:** Install ke home screen tanpa app store
-* **QR Scanner:** Built-in camera scanner untuk asset identification
-* **Offline Support:** Basic offline capability dengan service worker
-* **Responsive Design:** Mobile-first UI/UX design
-
-#### ⚡ **Performance**
-* **Database Indexing:** 18 optimized indexes untuk query speed
-* **Widget Caching:** 5-minute cache untuk dashboard analytics
-* **Lazy Loading:** Progressive widget loading untuk fast page render
-* **Query Optimization:** Eager loading untuk eliminate N+1 queries
-
-#### 🎨 **UI/UX Excellence**
-* **Professional Blue Theme:** Modern corporate color palette
-* **Custom Branding:** Logo, favicon, dan brand name customizable
-* **Dark Mode:** Full dark mode support
-* **Poppins Font:** Premium typography untuk better readability
-* **Collapsible Sidebar:** Desktop optimization dengan auto-collapse
+Aplikasi ini dioptimalkan untuk performa tinggi (SPA-style) dan mendukung penggunaan di perangkat mobile secara native (PWA).
 
 ---
 
-## 🛠️ Stack Teknologi
+## ✨ Fitur Lengkap (End-to-End)
 
-* **Framework:** [Laravel 12.x](https://laravel.com/)
-* **Admin Panel:** [Filament v3](https://filamentphp.com/)
-* **UI/Styling:** [Tailwind CSS](https://tailwindcss.com/)
-* **Database:** [MySQL 8.0](https://www.mysql.com/)
-* **Authentication:** [Laravel Sanctum](https://laravel.com/docs/sanctum)
-* **Permissions:** [Filament Shield](https://github.com/bezhanSalleh/filament-shield)
-* **Excel:** [Laravel Excel](https://laravel-excel.com/)
-* **PDF:** [Laravel DomPDF](https://github.com/barryvdh/laravel-dompdf)
-* **QR Code:** [Simple QrCode](https://www.simplesoftware.io/docs/simple-qrcode)
+Berikut adalah daftar lengkap fitur yang tersedia di dalam sistem SIMA:
 
----
+### 📦 1. Manajemen Aset & Basis Data
+| Fitur | Deskripsi |
+| :--- | :--- |
+| **Katalog Aset Utama** | Manajemen data barang lengkap (Merk, Tipe, No. Seri, NUP, Tahun Perolehan). |
+| **Visual Evidence** | Upload foto fisik barang untuk verifikasi kondisi secara visual. |
+| **QR Code System** | Generasi QR Code otomatis per item untuk identifikasi cepat di lapangan. |
+| **E-Labeling** | Cetak label aset (thermal/grid) langsung dari sistem untuk ditempel ke fisik barang. |
+| **Kategorisasi BMN** | Pengelompokan barang sesuai kode akun BMN standar pemerintah. |
 
-## 🚀 Memulai
+### 📈 2. Akuntansi & Nilai Aset
+| Fitur | Deskripsi |
+| :--- | :--- |
+| **Penyusutan Otomatis** | Kalkulasi depresiasi metode *Straight Line* (Garis Lurus) secara real-time. |
+| **Masa Manfaat** | Pengaturan umur ekonomis per kategori untuk akurasi nilai buku. |
+| **Financial Tracking** | Monitoring harga perolehan, akumulasi penyusutan, dan nilai residu aset. |
+| **Laporan Penyusutan** | Cetak laporan rekapitulasi nilai aset tahunan ke format PDF. |
 
-### Prasyarat
-* PHP >= 8.2
-* Composer
-* Node.js & NPM
-* MySQL 8.0+
-* Extension PHP: BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML, GD
+### 🏢 3. Inventarisasi & Lokasi
+| Fitur | Deskripsi |
+| :--- | :--- |
+| **Manajemen Ruangan** | Pengelolaan data lokasi/ruangan beserta penanggung jawab (PIC). |
+| **Cetak KIB (DBR)** | **(New)** Cetak Kartu Inventaris Barang / Daftar Barang Ruangan untuk ditempel di pintu. |
+| **Tracking Eksternal** | Fitur khusus untuk aset yang dipinjam pakai/dibawa pulang (dilengkapi SPTJM). |
+| **Mutasi Aset** | Pencatatan otomatis setiap kali barang berpindah antar ruangan (Audit Trail). |
 
-### Instalasi Langkah-demi-Langkah
+### 🔄 4. Alur Kerja Operasional
+| Fitur | Deskripsi |
+| :--- | :--- |
+| **Peminjaman Aset** | Workflow peminjaman digital dengan status (Dipinjam/Kembali). |
+| **Quick Return** | Tombol satu-klik untuk konfirmasi pengembalian barang. |
+| **Pemeliharaan (Servis)** | Sistem ticketing kerusakan barang, tracking vendor, dan pencatatan biaya perbaikan. |
+| **Audit Stock Opname** | Pemeriksaan berkala menggunakan scanner untuk mencocokkan fisik vs sistem. |
+| **Pengadaan (Procurement)** | Modul pengajuan barang baru dengan sistem persetujuan (Approval) bertingkat. |
+| **Auto-Asset Creation** | Barang yang diterima dari pengadaan otomatis menjadi data aset baru. |
 
-1.  **Clone Repositori**
-    ```sh
-    git clone https://github.com/aryadians/inventaris-bmn.git
-    cd inventaris-bmn
-    ```
+### 🗑️ 5. Administrasi & Penghapusan (New)
+| Fitur | Deskripsi |
+| :--- | :--- |
+| **Modul Penghapusan** | Proses penghapusan aset dari sistem (Pemusnahan, Lelang, Hibah). |
+| **Manajemen SK** | Upload Surat Keputusan (SK) dan Berita Acara (BA) penghapusan aset. |
+| **Update Status Final** | Aset yang telah dihapus otomatis masuk ke arsip dan tidak muncul di daftar aktif. |
 
-2.  **Instalasi Dependensi**
-    ```sh
-    composer install
-    npm install && npm run build
-    ```
+### 📱 6. Teknologi Mobile & Notifikasi
+| Fitur | Deskripsi |
+| :--- | :--- |
+| **PWA (Installable)** | Dapat diinstal di Android/iOS dan berjalan seperti aplikasi mobile. |
+| **High-Speed Scanner** | Scanner QR kamera HP dengan UI profesional, laser animation, dan beep feedback. |
+| **WA Reminder** | **(New)** Kirim pengingat jatuh tempo peminjaman otomatis via WhatsApp. |
+| **Email Integration** | Notifikasi persetujuan pengadaan dikirim langsung ke email user. |
 
-3.  **Konfigurasi Environment**
-    ```sh
-    cp .env.example .env
-    php artisan key:generate
-    ```
-    *Sesuaikan variabel di file `.env`:*
-    ```env
-    DB_DATABASE=your_database_name
-    DB_USERNAME=your_database_user
-    DB_PASSWORD=your_database_password
-    
-    # Email Configuration (optional)
-    MAIL_MAILER=smtp
-    MAIL_HOST=smtp.gmail.com
-    MAIL_PORT=587
-    MAIL_USERNAME=your-email@gmail.com
-    MAIL_PASSWORD=your-app-password
-    ```
-
-4.  **Migrasi & Seed Database**
-    ```sh
-    php artisan migrate --seed
-    php artisan shield:generate --all
-    ```
-
-5.  **Seed Test Data (Optional)**
-    ```sh
-    php artisan db:seed --class=ComprehensiveDataSeeder
-    ```
-    *Ini akan membuat 60+ sample assets, 3 users dengan roles, dan test data.*
-
-6.  **Optimasi & Tautan Storage**
-    ```sh
-    php artisan storage:link
-    php artisan filament:optimize
-    php artisan route:cache
-    php artisan config:cache
-    ```
-
-7.  **Jalankan Aplikasi**
-    ```sh
-    # Development
-    npm run dev
-    php artisan serve
-    
-    # Production
-    npm run build
-    ```
-
-8.  **Akses Aplikasi**
-    - URL: `http://localhost:8000/admin`
-    - Email: `admin@admin.com` (default)
-    - Password: `password`
+### 🔐 7. Keamanan & Performa
+| Fitur | Deskripsi |
+| :--- | :--- |
+| **RBAC (Shield)** | Hak akses granular (Super Admin, Admin, Staff, Peminjam). |
+| **Audit Logs** | Mencatat siapa, kapan, dan apa yang diubah pada setiap data (Audit Compliance). |
+| **SPA Navigation** | Perpindahan halaman super cepat tanpa reload browser. |
+| **Deferred Loading** | Tabel memuat data di background untuk menghindari "hang" pada data besar. |
 
 ---
 
-## 📚 Dokumentasi Lengkap
+## 📊 Executive Dashboard
 
-### Default Users (after seeding)
-| Email | Role | Password |
-|-------|------|----------|
-| `manager@lapas.go.id` | Manager | `password` |
-| `staff@lapas.go.id` | Staff | `password` |
-| `teknisi@lapas.go.id` | Teknisi | `password` |
+SIMA menyediakan visualisasi data real-time untuk pengambil keputusan:
+*   **Stats Widget:** Total Unit, Total Nilai Aset, Barang Rusak, Nilai Buku.
+*   **Kondisi Chart:** Donut chart perbandingan kondisi Baik/Rusak.
+*   **Value Chart:** Bar chart nilai aset per kategori barang.
+*   **Maintenance Trend:** **(New)** Line chart biaya perbaikan bulanan.
+*   **Recent Activity:** Daftar mutasi dan peminjaman terbaru.
 
-### API Endpoints
+---
+
+## 🚀 Panduan Instalasi (Development)
+
+### 1. Kloning & Dependensi
 ```bash
-# List all assets (with filters)
-GET /api/assets?status=AKTIF&search=laptop
-
-# Get asset details
-GET /api/assets/{id}
-
-# Search by QR code
-POST /api/assets/qr
-Body: { "qr_code": "ASSET-001" }
+git clone https://github.com/aryadians/inventaris-bmn.git
+cd inventaris-bmn
+composer install
+npm install
 ```
 
-### Key Artisan Commands
+### 2. Konfigurasi Sistem
 ```bash
-# Clear all caches
-php artisan cache:clear
-php artisan filament:optimize-clear
+cp .env.example .env
+php artisan key:generate
+```
+*Atur koneksi DB di `.env` (DB_DATABASE, DB_USERNAME, DB_PASSWORD).*
 
-# Generate policies for new resources
-php artisan shield:generate --all
-
-# Create test data
+### 3. Migrasi & Seed
+```bash
+php artisan migrate --seed
+# Untuk data demo:
 php artisan db:seed --class=ComprehensiveDataSeeder
 ```
 
----
-
-## 📉 Metodologi Penyusutan
-Aplikasi ini menggunakan perhitungan penyusutan otomatis berdasarkan Masa Manfaat yang ditentukan pada setiap kategori barang:
-
-$$Penyusutan\ Per\ Tahun = \frac{Harga\ Perolehan}{Masa\ Manfaat}$$
-
-Nilai Buku dihitung secara real-time setiap kali data diakses.
+### 4. Build & Run
+```bash
+php artisan storage:link
+npm run dev
+php artisan serve
+```
 
 ---
 
-## 🎯 Roadmap & Future Features
+## 🌐 Panduan Deployment (Production)
 
-- [ ] Multi-tenancy (SaaS mode)
-- [ ] Advanced workflow (multi-level approval)
-- [ ] AI-powered depreciation prediction
-- [ ] Automated procurement suggestions
-- [ ] Mobile apps (React Native)
-- [ ] Blockchain integration untuk audit trail
-- [ ] IoT integration untuk asset tracking
+Untuk performa "Turbo" di server produksi:
 
----
-
-## 🤝 Kontribusi
-
-Kontribusi sangat diterima! Silakan:
-1. Fork repository
-2. Buat feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push ke branch (`git push origin feature/AmazingFeature`)
-5. Buka Pull Request
+1.  **Optimasi Aset & Cache:**
+    ```bash
+    npm run build
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+    php artisan filament:optimize
+    ```
+2.  **WhatsApp Integration:**
+    Masukkan API Key Fonnte Anda ke `.env`: `WA_API_KEY=xxx`
+3.  **Cron Job (Scheduler):**
+    Tambahkan ini ke crontab server Anda:
+    `* * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1`
 
 ---
 
-## 📑 Sitasi (Citation)
+## 📂 Struktur Direktori Utama
 
-Jika Anda menggunakan proyek ini untuk keperluan akademik, silakan kutip sebagai berikut:
-
-**Format APA:**
-> Dian, A. (2026). *SIMA: Sistem Informasi Manajemen Aset BMN Enterprise* (Versi 2.0.0) [Computer software]. https://github.com/aryadians/inventaris-bmn
-
----
-
-## 📄 Lisensi
-
-Dilisensikan di bawah **Lisensi MIT**. Lihat file `LICENSE` untuk detail lengkap.
+*   `app/Filament/Resources`: Logika utama Admin Panel (CRUD, Table, Form).
+*   `app/Models`: Definisi skema database dan relasi antar aset.
+*   `app/Services`: Integrasi pihak ketiga (WhatsApp API).
+*   `database/migrations`: Histori struktur database.
+*   `resources/views/pdf`: Template laporan (KIB, Bukti Pinjam, Penyusutan).
 
 ---
 
-## ✉️ Kontak
+## ✉️ Kontak & Kontribusi
+
+Kami sangat terbuka untuk masukan dan kontribusi pengembang lain.
 
 **Arya Dian**
-* Instagram: [@aransptr_](https://instagram.com/aransptr_)
-* Email: [aryadian003@gmail.com](mailto:aryadian003@gmail.com)
-* GitHub: [aryadians](https://github.com/aryadians)
+*   **Instagram:** [@aransptr_](https://instagram.com/aransptr_)
+*   **GitHub:** [aryadians](https://github.com/aryadians)
+*   **Email:** [aryadian003@gmail.com](mailto:aryadian003@gmail.com)
 
 ---
-
-## 🙏 Acknowledgments
-
-* Terima kasih kepada tim Lapas Kelas IIB Jombang
-* Filament Team untuk amazing admin panel framework
-* Laravel Community untuk ecosystem yang luar biasa
-* Contributors & testers yang telah membantu
-
----
-
 <p align="center">
-  Made with ❤️ in Indonesia
-  <br>
-  <strong>SIMA - Digitalisasi BMN untuk Indonesia Lebih Baik</strong>
+  Dibuat dengan ❤️ untuk Lapas Kelas IIB Jombang dan Indonesia.
 </p>
