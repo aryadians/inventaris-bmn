@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class StatsOverview extends BaseWidget
 {
+    protected static bool $isLazy = true;
     protected static ?int $sort = 1;
     protected int | string | array $columnSpan = 'full';
 
@@ -23,50 +24,32 @@ class StatsOverview extends BaseWidget
         // 3. Rusak Berat: Count with condition directly from DB
         $asetRusakBerat = Asset::where('kondisi', 'RUSAK_BERAT')->count();
 
-        // 4. Nilai Buku:
-        // Kalkulasi ini berat jika dilakukan di PHP untuk RIBUAN data.
-        // Solusi optimal: Gunakan Raw SQL untuk kalkulasi penyusutan di database level.
-        // Asumsi: masa_manfaat ada di table categories, join table diperlukan.
-        
-        $totalNilaiBuku = 0;
-        
-        // Cek apakah database driver mendukung (MySQL/PostgreSQL aman)
-        try {
-            // Bergantung pada struktur tabel categories dan assets
-            // Kita join ke categories untuk ambil masa_manfaat.
-            // Rumus: Nilai Buku = Harga - ( (Harga/MasaManfaat) * (TglSekarang - TglPerolehanFihun) )
-            // Karena rumit di SQL diff date, kita ambil simplifikasi atau lakukan chunking jika perlu.
-            // Untuk performa maks, kita return 0 atau cached value jika terlalu berat.
-            // Disini kita coba pendekatan chunking ringan atau raw SQL sederhana.
-            
-            // Pendekatan Hybrid: Ambil kolom minimal & hitung di PHP (Memory friendly)
-            // Limitasi: Jika data > 10.000, ini pun bisa lambat.
-            // Sebaiknya field 'nilai_buku' disimpan fix di database.
-            
-            Asset::query()
-                ->select(['harga_perolehan', 'tanggal_perolehan', 'category_id'])
-                ->with('category:id,masa_manfaat') // Eager load minimal
-                ->chunk(1000, function ($assets) use (&$totalNilaiBuku) {
-                    foreach ($assets as $asset) {
-                        $harga = $asset->harga_perolehan;
-                        // Default masa manfaat 1 tahun jika null (safety)
-                        $masaManfaat = $asset->category->masa_manfaat ?? 1; 
-                        
-                        // Hitung usia dalam tahun (float)
-                        $tgl = \Carbon\Carbon::parse($asset->tanggal_perolehan);
-                        $usiaTahun = $tgl->diffInDays(now()) / 365;
-                        
-                        // Penyusutan
-                        $penyusutan = ($harga / $masaManfaat) * $usiaTahun;
-                        $nilai = max($harga - $penyusutan, 0);
-                        
-                        $totalNilaiBuku += $nilai;
-                    }
-                });
-                
-        } catch (\Exception $e) {
-            $totalNilaiBuku = 0; // Fallback jika error
-        }
+        // 4. Nilai Buku: Cached for 1 hour to improve performance
+        $totalNilaiBuku = \Illuminate\Support\Facades\Cache::remember('total_nilai_buku', 3600, function () {
+            $total = 0;
+            try {
+                Asset::query()
+                    ->select(['harga_perolehan', 'tanggal_perolehan', 'category_id'])
+                    ->with('category:id,masa_manfaat')
+                    ->chunk(1000, function ($assets) use (&$total) {
+                        foreach ($assets as $asset) {
+                            $harga = $asset->harga_perolehan;
+                            $masaManfaat = $asset->category->masa_manfaat ?? 1; 
+                            
+                            $tgl = \Carbon\Carbon::parse($asset->tanggal_perolehan);
+                            $usiaTahun = $tgl->diffInDays(now()) / 365;
+                            
+                            $penyusutan = ($harga / $masaManfaat) * $usiaTahun;
+                            $nilai = max($harga - $penyusutan, 0);
+                            
+                            $total += $nilai;
+                        }
+                    });
+            } catch (\Exception $e) {
+                return 0;
+            }
+            return $total;
+        });
 
         return [
             Stat::make('Total Unit Aset', number_format($totalUnitAset, 0, ',', '.'))

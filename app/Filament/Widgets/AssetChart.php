@@ -7,6 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class AssetChart extends ChartWidget
 {
+    protected static bool $isLazy = true;
     // Urutan kedua setelah statistik
     protected static ?int $sort = 2;
 

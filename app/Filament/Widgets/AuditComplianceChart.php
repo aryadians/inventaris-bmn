@@ -6,6 +6,7 @@ use Filament\Widgets\ChartWidget;
 
 class AuditComplianceChart extends ChartWidget
 {
+    protected static bool $isLazy = true;
     protected static ?string $heading = 'Kepatuhan Audit Terakhir';
     protected static ?int $sort = 2;
 

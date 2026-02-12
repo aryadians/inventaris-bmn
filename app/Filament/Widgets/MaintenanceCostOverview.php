@@ -7,6 +7,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class MaintenanceCostOverview extends BaseWidget
 {
+    protected static bool $isLazy = true;
     protected static ?int $sort = 1;
 
     protected function getStats(): array

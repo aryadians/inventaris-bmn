@@ -117,6 +117,7 @@ class LoanResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferLoading()
             ->columns([
                 // Nama Peminjam
                 Tables\Columns\TextColumn::make('user.name')

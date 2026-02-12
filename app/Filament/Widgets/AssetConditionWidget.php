@@ -9,6 +9,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class AssetConditionWidget extends BaseWidget
 {
+    protected static bool $isLazy = true;
     protected static ?int $sort = 2; // Urutan ketiga, di sebelah chart
 
     protected int | string | array $columnSpan = 6;

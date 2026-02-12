@@ -9,6 +9,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestPeminjaman extends BaseWidget
 {
+    protected static bool $isLazy = true;
     protected static ?string $heading = 'Monitoring Barang Dipinjam (Belum Kembali)';
 
     protected int | string | array $columnSpan = 'full';
