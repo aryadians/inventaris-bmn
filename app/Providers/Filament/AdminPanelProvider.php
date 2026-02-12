@@ -84,6 +84,7 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Widgets\StatsOverview::class,
                 \App\Filament\Widgets\AssetChart::class,
                 \App\Filament\Widgets\AssetConditionWidget::class,
+                \App\Filament\Widgets\MaintenanceCostChart::class,
                 \App\Filament\Widgets\LatestMutations::class,
                 \App\Filament\Widgets\LatestPeminjaman::class,
             ])

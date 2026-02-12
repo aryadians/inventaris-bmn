@@ -48,8 +48,20 @@ class KirimPengingatJatuhTempo extends Command
         foreach ($loansToRemind as $loan) {
             // Pastikan relasi user dan asset ada
             if ($loan->user && $loan->asset) {
-                // Kirim notifikasi ke peminjam
+                // 1. Kirim notifikasi Email/Database (Existing)
                 $loan->user->notify(new PengingatJatuhTempo($loan));
+                
+                // 2. Kirim notifikasi WhatsApp (New)
+                if ($loan->user->phone) {
+                    $message = "Halo *{$loan->user->name}*,\n\nIni adalah pengingat dari *SIMA Lapas Jombang*. Barang BMN berikut akan jatuh tempo dalam 3 hari:\n\n" .
+                               "📦 *Barang:* {$loan->asset->nama_barang}\n" .
+                               "🔢 *NUP:* #{$loan->asset->nup}\n" .
+                               "📅 *Tenggat:* " . \Carbon\Carbon::parse($loan->tanggal_kembali_rencana)->format('d M Y') . "\n\n" .
+                               "Mohon segera lakukan pengembalian atau koordinasi lebih lanjut. Terima kasih.";
+                    
+                    \App\Services\WhatsAppService::send($loan->user->phone, $message);
+                }
+
                 $this->line("Notifikasi terkirim ke: {$loan->user->name} untuk aset: {$loan->asset->nama_barang}");
             }
         }
