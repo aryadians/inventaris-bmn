@@ -87,6 +87,12 @@ class RoomResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('cetak_kib')
+                    ->label('Cetak KIB')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->url(fn (Room $record) => route('cetak_kib', $record->id))
+                    ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

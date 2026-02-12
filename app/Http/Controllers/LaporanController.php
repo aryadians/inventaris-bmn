@@ -144,6 +144,33 @@ class LaporanController extends Controller
         return $pdf->stream('Label-QR-Bulk.pdf');
     }
 
+    public function cetakSptjm($id)
+    {
+        $asset = \App\Models\Asset::findOrFail($id);
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.sptjm', ['asset' => $asset])
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('SPTJM-Internal-' . $asset->nup . '.pdf');
+    }
+
+    public function cetakKib($id)
+    {
+        $room = \App\Models\Room::findOrFail($id);
+        $assets = \App\Models\Asset::where('room_id', $id)
+            ->where('status', '!=', 'DIHAPUS')
+            ->orderBy('category_id')
+            ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.kib_ruangan', [
+            'room' => $room,
+            'assets' => $assets,
+            'date' => now()->format('d F Y')
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->stream('KIB-Ruangan-' . $room->nama_ruangan . '.pdf');
+    }
+
     public function cetakPenyusutan()
     {
         // Mengambil semua aset yang memiliki kategori (untuk masa manfaat)

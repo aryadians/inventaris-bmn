@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cetak-label-bulk', [LaporanController::class, 'cetakLabelBulk'])->name('cetak_label_bulk');
     Route::get('/cetak-sptjm/{id}', [LaporanController::class, 'cetakSptjm'])->name('cetak_sptjm');
     Route::get('/cetak-penyusutan', [LaporanController::class, 'cetakPenyusutan'])->name('cetak_penyusutan');
+    Route::get('/cetak-kib/{id}', [LaporanController::class, 'cetakKib'])->name('cetak_kib');
     Route::get('/api/asset/find/{kode_barang}/{nup}', [AssetApiController::class, 'findByCode'])->name('api.asset.find');
     Route::get('/scan', [ScanController::class, 'index'])->name('scan.index');
 });
