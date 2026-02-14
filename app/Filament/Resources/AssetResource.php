@@ -263,6 +263,42 @@ class AssetResource extends Resource
                         ->url(fn($record) => route('cetak_sptjm', $record->id))
                         ->openUrlInNewTab()
                         ->visible(fn($record) => $record->is_external),
+                    Action::make('ajukan_penghapusan')
+                        ->label('Ajukan Penghapusan')
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Pengajuan Penghapusan Aset')
+                        ->modalDescription('Apakah Anda yakin ingin mengajukan penghapusan untuk aset ini? Data akan masuk ke daftar usulan penghapusan.')
+                        ->form([
+                            Forms\Components\DatePicker::make('tanggal_penghapusan')
+                                ->label('Tanggal Usulan')
+                                ->default(now())
+                                ->required(),
+                            Forms\Components\Textarea::make('alasan')
+                                ->label('Alasan Penghapusan')
+                                ->required()
+                                ->placeholder('Contoh: Rusak berat, hilang, atau kadaluarsa.'),
+                            Forms\Components\TextInput::make('kondisi_terakhir')
+                                ->label('Kondisi Terakhir')
+                                ->default(fn($record) => $record->kondisi)
+                                ->readOnly(),
+                        ])
+                        ->action(function (Asset $record, array $data) {
+                            \App\Models\AssetDisposal::create([
+                                'asset_id' => $record->id,
+                                'tanggal_penghapusan' => $data['tanggal_penghapusan'],
+                                'alasan' => $data['alasan'],
+                                'kondisi_terakhir' => $data['kondisi_terakhir'],
+                                'status' => 'pending', // Status awal
+                                'keterangan' => 'Diajukan via Asset Resource',
+                            ]);
+                            
+                            Notification::make()
+                                ->title('Usulan penghapusan berhasil dibuat')
+                                ->success()
+                                ->send();
+                        }),
                     Tables\Actions\DeleteAction::make(),
                 ])->icon('heroicon-m-ellipsis-vertical'),
             ])
