@@ -1,78 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Usulan Penghapusan</title>
+    <title>Usulan Penghapusan BMN</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid black; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        @page { margin: 1.5cm; size: a4 landscape; }
+        body { font-family: Arial, sans-serif; font-size: 11px; line-height: 1.4; color: #000; }
+        .kop { text-align: center; border-bottom: 3px solid #000; padding-bottom: 5px; margin-bottom: 20px; }
+        .kop h4 { margin: 0; font-size: 12px; }
+        .kop h2 { margin: 2px 0; font-size: 14px; }
+        .kop p { margin: 0; font-size: 9px; font-style: italic; }
+        
+        .title { text-align: center; font-weight: bold; text-decoration: underline; font-size: 14px; margin-top: 15px; text-transform: uppercase; }
+        .subtitle { text-align: center; margin-bottom: 20px; font-size: 12px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid black; padding: 8px; }
+        th { background-color: #f2f2f2; text-transform: uppercase; font-size: 10px; }
+        
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        
+        .footer { margin-top: 50px; width: 100%; }
+        .ttd-box { width: 40%; float: right; text-align: center; }
+        .clear { clear: both; }
     </style>
 </head>
 <body>
-
     <div class="kop">
-        <table style="border: none;">
-            <tr>
-                <td style="border: none; width: 15%; text-align: center;">
-                    <img src="{{ public_path('images/logo.png') }}" style="width: 80px;">
-                </td>
-                <td style="border: none; text-align: center;">
-                    <h4 style="margin:0;">KEMENTERIAN IMIGRASI DAN PEMASYARAKATAN</h4>
-                    <h3 style="margin:0;">LEMBAGA PEMASYARAKATAN KELAS IIB JOMBANG</h3>
-                    <small>Jl. KH. Wahid Hasyim No. 155, Jombang, Jawa Timur</small>
-                </td>
-            </tr>
-        </table>
-        <hr>
+        <h4>KEMENTERIAN HUKUM DAN HAK ASASI MANUSIA RI</h4>
+        <h4>KANTOR WILAYAH JAWA TIMUR</h4>
+        <h2>LAPAS KELAS IIB JOMBANG</h2>
+        <p>Jl. KH. Wahid Hasyim No. 151, Jombang | Telp: (0321) 861113</p>
     </div>
 
-    <div style="text-align: center; margin-top: 30px;">
-        <h3 style="text-decoration: underline;">DAFTAR USULAN PENGHAPUSAN BARANG MILIK NEGARA</h3>
-        <p>Tahun Anggaran {{ date('Y') }}</p>
-    </div>
+    <div class="title">DAFTAR USULAN PENGHAPUSAN BARANG MILIK NEGARA</div>
+    <div class="subtitle">TAHUN ANGGARAN {{ date('Y') }}</div>
 
-    <p>Bersama ini kami ajukan usulan penghapusan aset BMN dengan kondisi <strong>Rusak Berat</strong> sebagai berikut:</p>
+    <p>Berdasarkan hasil pemeriksaan kondisi fisik aset, bersama ini kami ajukan usulan penghapusan Barang Milik Negara (BMN) dengan kondisi <strong>Rusak Berat</strong> sebagai berikut:</p>
 
     <table>
         <thead>
             <tr>
-                <th>No</th>
-                <th>Kode Barang</th>
-                <th>Nama Barang</th>
-                <th>NUP</th>
-                <th>Tahun</th>
-                <th>Harga Perolehan</th>
-                <th>Kondisi</th>
+                <th width="3%">NO</th>
+                <th width="15%">KODE BARANG</th>
+                <th width="5%">NUP</th>
+                <th width="25%">NAMA BARANG</th>
+                <th width="15%">MERK / TIPE</th>
+                <th width="10%">TAHUN</th>
+                <th width="15%">HARGA PEROLEHAN (Rp)</th>
+                <th>KONDISI</th>
             </tr>
         </thead>
         <tbody>
             @php $total = 0; @endphp
             @foreach($assets as $index => $asset)
             <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $asset->kode_barang }}</td>
+                <td class="text-center">{{ $index + 1 }}</td>
+                <td class="text-center">{{ $asset->kode_barang }}</td>
+                <td class="text-center">{{ $asset->nup }}</td>
                 <td>{{ $asset->nama_barang }}</td>
-                <td>{{ $asset->nup }}</td>
-                <td>{{ \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('Y') }}</td>
-                <td>Rp {{ number_format($asset->harga_perolehan, 0, ',', '.') }}</td>
-                <td>{{ $asset->kondisi }}</td>
+                <td>{{ $asset->merk_type ?? '-' }}</td>
+                <td class="text-center">{{ \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('Y') }}</td>
+                <td class="text-right">{{ number_format($asset->harga_perolehan, 0, ',', '.') }}</td>
+                <td class="text-center">{{ $asset->kondisi }}</td>
             </tr>
             @php $total += $asset->harga_perolehan; @endphp
             @endforeach
-            <tr>
-                <td colspan="5" style="text-align: right; font-weight: bold;">TOTAL NILAI PEROLEHAN</td>
-                <td colspan="2" style="font-weight: bold;">Rp {{ number_format($total, 0, ',', '.') }}</td>
-            </tr>
         </tbody>
+        <tfoot>
+            <tr style="background-color: #eee; font-weight: bold;">
+                <td colspan="6" class="text-right">TOTAL NILAI USULAN PENGHAPUSAN</td>
+                <td class="text-right">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                <td></td>
+            </tr>
+        </tfoot>
     </table>
 
-    <div style="margin-top: 50px; text-align: right; width: 40%; margin-left: auto;">
-        <p>Jombang, {{ date('d F Y') }}</p>
-        <p>Kepala Lapas Kelas IIB Jombang</p>
-        <br><br><br><br>
-        <p><strong>( NAMA KALAPAS )</strong></p>
-        <p>NIP. 19xxxxxxxxxxxx</p>
+    <p style="margin-top: 20px; font-style: italic;">Demikian daftar usulan ini dibuat untuk proses penghapusan aset sesuai dengan ketentuan yang berlaku.</p>
+
+    <div class="footer">
+        <div class="ttd-box">
+            Jombang, {{ date('d F Y') }}<br>
+            Kepala Lapas Kelas IIB Jombang
+            <br><br><br><br><br>
+            <strong><u>( NAMA KEPALA LAPAS )</u></strong><br>
+            NIP. ..........................................
+        </div>
+        <div class="clear"></div>
     </div>
 
 </body>

@@ -1,114 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Berita Acara Peminjaman</title>
+    <title>Berita Acara Peminjaman - {{ $loan->asset->nama_barang }}</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; }
-        .header { text-align: center; font-weight: bold; margin-bottom: 20px; text-decoration: underline; }
-        .content { margin-top: 20px; }
-        .table-data { width: 100%; margin-top: 10px; border-collapse: collapse; }
-        .table-data td { padding: 5px; vertical-align: top; }
-        .ttd-area { margin-top: 50px; width: 100%; text-align: center; }
+        @page { margin: 1.5cm; size: a4 portrait; }
+        body { font-family: Arial, sans-serif; font-size: 11px; line-height: 1.5; color: #000; }
+        .kop { text-align: center; border-bottom: 3px solid #000; padding-bottom: 5px; margin-bottom: 20px; }
+        .kop h4 { margin: 0; font-size: 12px; }
+        .kop h2 { margin: 2px 0; font-size: 14px; }
+        .kop p { margin: 0; font-size: 9px; font-style: italic; }
+        
+        .title { text-align: center; font-weight: bold; text-decoration: underline; font-size: 13px; margin-top: 10px; text-transform: uppercase; }
+        .doc-number { text-align: center; margin-bottom: 20px; font-size: 11px; }
+        
+        .content { text-align: justify; }
+        .data-table { width: 100%; margin: 10px 0; border-collapse: collapse; }
+        .data-table td { padding: 3px 0; vertical-align: top; }
+        
+        .item-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .item-table th, .item-table td { border: 1px solid #000; padding: 8px; text-align: center; }
+        .item-table th { background-color: #f2f2f2; }
+        
+        .footer { margin-top: 40px; width: 100%; }
+        .ttd-box { width: 45%; display: inline-block; text-align: center; }
+        .spacer { width: 8%; display: inline-block; }
     </style>
 </head>
 <body>
-
     <div class="kop">
-        <table style="width: 100%; border-bottom: 3px solid black;">
-            <tr>
-                <td style="width: 15%; text-align: center;">
-                    <img src="{{ public_path('images/logo.png') }}" style="width: 80px;">
-                </td>
-                <td style="text-align: center;">
-                    <h4 style="margin:0;">KEMENTERIAN IMIGRASI DAN PEMASYARAKATAN</h4>
-                    <h3 style="margin:0;">LEMBAGA PEMASYARAKATAN KELAS IIB JOMBANG</h3>
-                    <small>Jl. KH. Wahid Hasyim No. 155, Jombang, Jawa Timur</small>
-                </td>
-            </tr>
-        </table>
+        <h4>KEMENTERIAN HUKUM DAN HAK ASASI MANUSIA RI</h4>
+        <h4>KANTOR WILAYAH JAWA TIMUR</h4>
+        <h2>LAPAS KELAS IIB JOMBANG</h2>
+        <p>Jl. KH. Wahid Hasyim No. 151, Jombang | Telp: (0321) 861113</p>
     </div>
 
-    <div style="text-align: center; margin-top: 20px;">
-        <h3 style="text-decoration: underline; margin-bottom: 0;">BERITA ACARA PEMINJAMAN BMN</h3>
-        <small>Nomor: BMN/PINJAM/{{ date('Y') }}/{{ $loan->id }}</small>
-    </div>
+    <div class="title">BERITA ACARA PEMINJAMAN BARANG MILIK NEGARA</div>
+    <div class="doc-number">Nomor: W.15.PAS.PAS.10-BMN.{{ date('Y') }}.{{ str_pad($loan->id, 3, '0', STR_PAD_LEFT) }}</div>
 
     <div class="content">
-        <p>Pada hari ini <strong>{{ \Carbon\Carbon::parse($loan->tanggal_pinjam)->translatedFormat('l, d F Y') }}</strong>, kami yang bertanda tangan di bawah ini:</p>
+        <p>Pada hari ini <strong>{{ \Carbon\Carbon::parse($loan->tanggal_pinjam)->translatedFormat('l') }}</strong>, tanggal <strong>{{ \Carbon\Carbon::parse($loan->tanggal_pinjam)->translatedFormat('d') }}</strong> bulan <strong>{{ \Carbon\Carbon::parse($loan->tanggal_pinjam)->translatedFormat('F') }}</strong> tahun <strong>{{ \Carbon\Carbon::parse($loan->tanggal_pinjam)->translatedFormat('Y') }}</strong>, kami yang bertanda tangan di bawah ini:</p>
 
-        <table class="table-data">
+        <table class="data-table">
             <tr>
-                <td style="width: 30%;">1. Nama</td>
-                <td style="width: 5%;">:</td>
-                <td><strong>ADMINISTRATOR BMN</strong></td>
+                <td width="5%">I.</td>
+                <td width="25%">Nama</td>
+                <td width="2%">:</td>
+                <td><strong>PETUGAS PENGELOLA BMN</strong></td>
             </tr>
             <tr>
-                <td>   Jabatan</td>
+                <td></td>
+                <td>Jabatan</td>
                 <td>:</td>
-                <td>Petugas Pengelola BMN</td>
+                <td>Pengelola Barang Milik Negara Lapas Kelas IIB Jombang</td>
             </tr>
             <tr>
-                <td colspan="3">Selanjutnya disebut <strong>PIHAK PERTAMA</strong> (Yang Menyerahkan).</td>
+                <td></td>
+                <td colspan="3">Selanjutnya disebut sebagai <strong>PIHAK PERTAMA</strong>.</td>
             </tr>
         </table>
 
-        <br>
-
-        <table class="table-data">
+        <table class="data-table">
             <tr>
-                <td style="width: 30%;">2. Nama Peminjam</td>
-                <td style="width: 5%;">:</td>
+                <td width="5%">II.</td>
+                <td width="25%">Nama</td>
+                <td width="2%">:</td>
                 <td><strong>{{ strtoupper($loan->user->name) }}</strong></td>
             </tr>
             <tr>
-                <td>   Unit/Ruangan</td>
+                <td></td>
+                <td>Unit Kerja</td>
                 <td>:</td>
-                <td>{{ $loan->user->email ?? '-' }}</td> </tr>
+                <td>{{ $loan->asset->room->nama_ruangan ?? 'Staf Lapas Jombang' }}</td>
+            </tr>
             <tr>
-                <td colspan="3">Selanjutnya disebut <strong>PIHAK KEDUA</strong> (Yang Menerima).</td>
+                <td></td>
+                <td colspan="3">Selanjutnya disebut sebagai <strong>PIHAK KEDUA</strong>.</td>
             </tr>
         </table>
 
-        <p>PIHAK PERTAMA menyerahkan Barang Milik Negara (BMN) kepada PIHAK KEDUA dengan rincian sebagai berikut:</p>
+        <p>PIHAK PERTAMA menyerahkan kepada PIHAK KEDUA, dan PIHAK KEDUA menerima dari PIHAK PERTAMA Barang Milik Negara dengan rincian sebagai berikut:</p>
 
-        <table border="1" style="width: 100%; border-collapse: collapse; text-align: center;">
-            <tr style="background-color: #eee;">
-                <th>Kode Barang</th>
-                <th>Nama Barang</th>
-                <th>Kondisi</th>
-                <th>Rencana Kembali</th>
-            </tr>
-            <tr>
-                <td style="padding: 10px;">{{ $loan->asset->kode_barang }}</td>
-                <td style="padding: 10px;">{{ $loan->asset->nama_barang }}</td>
-                <td style="padding: 10px;">{{ $loan->asset->kondisi }}</td>
-                <td style="padding: 10px;">{{ \Carbon\Carbon::parse($loan->tanggal_kembali_rencana)->format('d/m/Y') }}</td>
-            </tr>
+        <table class="item-table">
+            <thead>
+                <tr>
+                    <th>NAMA BARANG</th>
+                    <th>KODE BARANG</th>
+                    <th>NUP</th>
+                    <th>KONDISI</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $loan->asset->nama_barang }}</td>
+                    <td>{{ $loan->asset->kode_barang }}</td>
+                    <td>#{{ $loan->asset->nup }}</td>
+                    <td>{{ $loan->asset->kondisi }}</td>
+                </tr>
+            </tbody>
         </table>
 
-        <p style="margin-top: 10px; font-style: italic;">
-            Catatan: {{ $loan->keterangan ?? 'Digunakan untuk keperluan dinas.' }}
-        </p>
+        <p>Dengan ketentuan sebagai berikut:</p>
+        <ol>
+            <li>Barang tersebut dipinjamkan untuk mendukung kelancaran pelaksanaan tugas kedinasan.</li>
+            <li>PIHAK KEDUA wajib memelihara dan menjaga barang tersebut dengan sebaik-baiknya.</li>
+            <li>Apabila terjadi kerusakan atau kehilangan yang disebabkan oleh kelalaian PIHAK KEDUA, maka PIHAK KEDUA bersedia bertanggung jawab sesuai ketentuan yang berlaku.</li>
+            <li>Barang tersebut akan dikembalikan paling lambat tanggal <strong>{{ \Carbon\Carbon::parse($loan->tanggal_kembali_rencana)->translatedFormat('d F Y') }}</strong>.</li>
+        </ol>
 
-        <p>Demikian Berita Acara ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
+        <p>Demikian Berita Acara Peminjaman ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
     </div>
 
-    <table class="ttd-area">
-        <tr>
-            <td style="width: 50%;">
-                Yang Menerima,<br>
-                PIHAK KEDUA
-                <br><br><br><br>
-                <strong><u>{{ strtoupper($loan->user->name) }}</u></strong>
-            </td>
-            <td style="width: 50%;">
-                Yang Menyerahkan,<br>
-                PIHAK PERTAMA
-                <br><br><br><br>
-                <strong><u>PETUGAS BMN</u></strong>
-            </td>
-        </tr>
-    </table>
-
+    <div class="footer">
+        <div class="ttd-box">
+            Yang Menerima,<br>
+            PIHAK KEDUA
+            <br><br><br><br><br>
+            <strong><u>{{ strtoupper($loan->user->name) }}</u></strong><br>
+            NIP. ..........................................
+        </div>
+        <div class="spacer"></div>
+        <div class="ttd-box">
+            Yang Menyerahkan,<br>
+            PIHAK PERTAMA
+            <br><br><br><br><br>
+            <strong><u>PENGELOLA BMN</u></strong><br>
+            NIP. ..........................................
+        </div>
+    </div>
 </body>
 </html>
