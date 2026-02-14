@@ -21,6 +21,7 @@ class RoomInventoryStats extends Widget
                 'id' => $room->id,
                 'name' => $room->nama_ruangan,
                 'code' => $room->kode_ruangan,
+                'pj' => $room->penanggung_jawab,
                 'total_assets' => $room->assets->count(),
                 'baik' => $room->assets->where('kondisi', 'BAIK')->count(),
                 'rusak_ringan' => $room->assets->where('kondisi', 'RUSAK_RINGAN')->count(),

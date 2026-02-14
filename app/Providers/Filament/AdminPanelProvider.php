@@ -32,16 +32,15 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->darkMode(true)
-            ->login(\App\Filament\Auth\Login::class)
             ->colors([
-                'primary' => Color::Blue,
-                'danger' => Color::Red,
-                'info' => Color::Sky,
+                'primary' => Color::Cyan,
+                'danger' => Color::Rose,
+                'info' => Color::Blue,
                 'success' => Color::Emerald,
                 'warning' => Color::Amber,
-                'gray' => Color::Zinc,
+                'gray' => Color::Slate,
             ])
-            ->font('Poppins')
+            ->font('Outfit')
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
             ->navigationGroups([

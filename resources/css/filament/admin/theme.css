@@ -7,46 +7,128 @@
 @source '../../../../resources/views/filament/**/*.blade.php';
 @source '../../../../vendor/filament/**/*.blade.php';
 
-/* Custom Theme Overrides for SIMA */
-
-/* Login Page Background */
-.fi-login-page {
-    background-image: linear-gradient(135deg, #0f172a 0%, #1e293b 100%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+@theme {
+    --color-primary-500: #06b6d4; /* Cyan */
+    --color-primary-600: #0891b2;
 }
 
-/* Sidebar Styling */
-.fi-sidebar-nav {
-    @apply space-y-1;
+/* --- GLOBAL DARK STYLES --- */
+body {
+    background-color: #020617 !important; /* Deepest Navy */
+    color: #f8fafc !important;
+    font-family: 'Outfit', sans-serif;
 }
 
-.fi-sidebar-item-button {
-    @apply rounded-lg transition-all duration-200 hover:bg-white/5;
+/* --- SIDEBAR STYLING --- */
+.fi-sidebar {
+    background: #0f172a !important; /* Slate 900 */
+    border-right: 1px solid #1e293b !important;
+}
+
+.fi-sidebar-nav-label, .fi-sidebar-group-label {
+    color: #94a3b8 !important; /* Slate 400 */
+    font-weight: 800 !important;
+}
+
+.fi-sidebar-item-label {
+    color: #e2e8f0 !important;
 }
 
 .fi-sidebar-item-active .fi-sidebar-item-button {
-    @apply bg-blue-900/20 text-blue-400 font-semibold shadow-inner ring-1 ring-white/5;
+    background: linear-gradient(90deg, #0891b2 0%, #06b6d4 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.2) !important;
 }
 
-/* Card Styling */
-.fi-section, .fi-widget {
-    @apply rounded-xl border border-gray-700/50 shadow-sm transition-all hover:shadow-md bg-gray-900/50 backdrop-blur-sm;
+/* --- TOPBAR --- */
+.fi-topbar {
+    background: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid #1e293b !important;
 }
 
-/* Table Enhancements */
-.fi-ta-header-cell {
-    @apply font-bold text-gray-400 uppercase tracking-wider text-xs;
+/* --- CARD & WIDGET STYLING (THE CORE FIX) --- */
+.fi-section, .fi-ta-ctn, .fi-widget {
+    background-color: #0f172a !important; /* Slate 900 */
+    border: 1px solid #1e293b !important;
+    border-radius: 24px !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Stats Overview Text Visibility */
+.fi-wi-stats-overview-stat {
+    background: #1e293b !important; /* Slate 800 for contrast */
+    border-radius: 20px !important;
+    border: 1px solid #334155 !important;
+    transition: transform 0.2s ease;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    transform: scale(1.02);
+    border-color: #06b6d4;
+}
+
+.fi-wi-stats-overview-stat-label {
+    color: #94a3b8 !important; /* Secondary text */
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.025em !important;
+}
+
+.fi-wi-stats-overview-stat-value {
+    color: #ffffff !important; /* Pure White for Main Numbers */
+    font-weight: 900 !important;
+    font-size: 1.875rem !important;
+    margin-top: 4px !important;
+}
+
+.fi-wi-stats-overview-stat-description {
+    color: #22d3ee !important; /* Cyan for subtitles */
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+}
+
+/* Icons in Stats */
+.fi-wi-stats-overview-stat-icon {
+    color: #06b6d4 !important; /* Cyan Icons */
+    background: rgba(6, 182, 212, 0.1) !important;
+    padding: 8px !important;
+    border-radius: 12px !important;
+}
+
+/* --- TABLE DARK MODE --- */
+.fi-ta-header-cell-label {
+    color: #64748b !important;
+    font-weight: 800 !important;
+}
+
+.fi-ta-cell-content {
+    color: #cbd5e1 !important;
 }
 
 .fi-ta-row:hover {
-    @apply bg-white/5 transition-colors;
+    background-color: rgba(255, 255, 255, 0.02) !important;
 }
 
-/* Button Refinements */
-.fi-btn {
-    @apply rounded-lg shadow-sm transition-transform active:scale-95;
+/* --- FORM & INPUTS --- */
+.fi-fo-field-label {
+    color: #e2e8f0 !important;
+    font-weight: 700 !important;
 }
 
-/* Form Inputs */
-.fi-input, .fi-select-input {
-    @apply rounded-lg border-gray-600 bg-gray-800/50 focus:ring-2 focus:ring-blue-500/50;
+input, select, textarea {
+    background-color: #020617 !important;
+    border-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+/* --- LOGIN PAGE --- */
+.fi-login-page {
+    background: #020617 !important;
+}
+
+.fi-login-page .fi-card {
+    background: #0f172a !important;
+    border: 1px solid #1e293b !important;
 }

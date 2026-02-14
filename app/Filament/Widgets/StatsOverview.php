@@ -53,23 +53,27 @@ class StatsOverview extends BaseWidget
 
         return [
             Stat::make('Total Unit Aset', number_format($totalUnitAset, 0, ',', '.'))
-                ->description('Semua barang yang terdaftar')
+                ->description('Aset Terdaftar')
                 ->descriptionIcon('heroicon-m-cube')
+                ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color('primary'),
 
             Stat::make('Total Nilai Perolehan', 'Rp ' . number_format($totalHargaPerolehan, 0, ',', '.'))
-                ->description('Akumulasi harga perolehan')
+                ->description('Kapitalisasi Aset')
                 ->descriptionIcon('heroicon-m-banknotes')
+                ->chart([15, 4, 10, 2, 12, 4, 11])
                 ->color('success'),
 
             Stat::make('Aset Rusak Berat', number_format($asetRusakBerat, 0, ',', '.'))
-                ->description('Perlu penghapusan segera')
-                ->descriptionIcon('heroicon-m-trash')
+                ->description('Butuh Tindakan')
+                ->descriptionIcon('heroicon-m-exclamation-triangle')
+                ->chart([2, 10, 5, 12, 4, 11, 4])
                 ->color('danger'),
 
             Stat::make('Total Nilai Buku (Est)', 'Rp ' . number_format($totalNilaiBuku, 0, ',', '.'))
-                ->description('Estimasi nilai residu saat ini')
-                ->descriptionIcon('heroicon-m-calculator')
+                ->description('Nilai Sisa')
+                ->descriptionIcon('heroicon-m-presentation-chart-line')
+                ->chart([7, 12, 10, 15, 10, 12, 17])
                 ->color('info'),
         ];
     }
