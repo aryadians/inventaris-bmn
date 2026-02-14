@@ -12,6 +12,7 @@ Artisan::command('inspire', function () {
 Schedule::command('app:kirim-pengingat-jatuh-tempo')->daily();
 Schedule::command('app:check-due-loans')->daily(); // Cek overdue setiap hari
 Schedule::command('app:kirim-pengingat-pemeliharaan')->daily();
+Schedule::command('app:check-preventive-maintenance')->daily(); // Cek servis rutin harian
 
 // Backup Database & Files
 Schedule::command('backup:clean')->daily()->at('01:00');

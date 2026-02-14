@@ -12,6 +12,7 @@ class Category extends Model
         'kode_kategori',
         'nama_kategori',
         'masa_manfaat',
+        'frekuensi_servis',
     ];
 
     /**

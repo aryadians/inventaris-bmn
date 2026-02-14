@@ -74,6 +74,13 @@ class CategoryResource extends Resource
                             ->required()
                             ->suffix('Tahun')
                             ->helperText('Durasi penyusutan barang sesuai aturan Kemenkeu.'),
+
+                        Forms\Components\TextInput::make('frekuensi_servis')
+                            ->label('Frekuensi Servis Rutin')
+                            ->placeholder('Contoh: 3')
+                            ->numeric()
+                            ->suffix('Bulan')
+                            ->helperText('Jadwal pemeliharaan berkala (misal: 3 bulan sekali untuk AC).'),
                     ])->columns(2),
             ]);
     }
@@ -98,6 +105,13 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('masa_manfaat')
                     ->label('Masa Manfaat')
                     ->suffix(' Tahun')
+                    ->alignCenter()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('frekuensi_servis')
+                    ->label('Frekuensi Servis')
+                    ->suffix(' Bulan')
+                    ->placeholder('Tidak ada')
                     ->alignCenter()
                     ->sortable(),
 

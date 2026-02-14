@@ -87,10 +87,11 @@ class RoomResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('cetak_kib')
-                    ->label('Cetak KIB')
+                Tables\Actions\Action::make('cetak_dbr')
+                    ->label('Cetak DBR')
+                    ->tooltip('Cetak Daftar Barang Ruangan (PDF)')
                     ->icon('heroicon-o-printer')
-                    ->color('info')
+                    ->color('success')
                     ->url(fn (Room $record) => route('cetak_kib', $record->id))
                     ->openUrlInNewTab(),
             ])

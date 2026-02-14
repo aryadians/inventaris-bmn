@@ -2,43 +2,42 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Procurement;
+use App\Models\Asset;
 use Filament\Widgets\ChartWidget;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class ProcurementTrendChart extends ChartWidget
 {
-    protected static ?string $heading = 'Trend Pengadaan (6 Bulan Terakhir)';
-    protected static ?int $sort = 2;
-    protected static ?string $pollingInterval = '60s';
     protected static bool $isLazy = true;
+    protected static ?int $sort = 3;
+    protected int | string | array $columnSpan = 'full';
+    protected static ?string $heading = 'Tren Pengadaan Barang (Biaya Per Tahun)';
+    protected static ?string $maxHeight = '300px';
 
     protected function getData(): array
     {
-        return Cache::remember('dashboard.procurement_trend', 300, function() {
-            $months = [];
-            $counts = [];
-            
-            for ($i = 5; $i >= 0; $i--) {
-                $date = now()->subMonths($i);
-                $months[] = $date->format('M Y');
-                $counts[] = Procurement::whereYear('tgl_pengajuan', $date->year)
-                    ->whereMonth('tgl_pengajuan', $date->month)
-                    ->count();
-            }
+        // Ambil data biaya perolehan 10 tahun terakhir
+        $data = Asset::query()
+            ->selectRaw('YEAR(tanggal_perolehan) as year, SUM(harga_perolehan) as total')
+            ->whereNotNull('tanggal_perolehan')
+            ->where('tanggal_perolehan', '>=', now()->subYears(10)->startOfYear())
+            ->groupBy('year')
+            ->orderBy('year')
+            ->get();
 
-            return [
-                'datasets' => [
-                    [
-                        'label' => 'Jumlah Pengadaan',
-                        'data' => $counts,
-                        'backgroundColor' => '#3b82f6',
-                        'borderColor' => '#2563eb',
-                    ],
+        return [
+            'datasets' => [
+                [
+                    'label' => 'Total Biaya Pengadaan (Rp)',
+                    'data' => $data->pluck('total')->toArray(),
+                    'fill' => 'start',
+                    'borderColor' => '#3b82f6', // Biru
+                    'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
+                    'tension' => 0.3,
                 ],
-                'labels' => $months,
-            ];
-        });
+            ],
+            'labels' => $data->pluck('year')->toArray(),
+        ];
     }
 
     protected function getType(): string
