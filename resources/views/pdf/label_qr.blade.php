@@ -76,7 +76,7 @@
         <div class="qr-code">
             @php
                 // Generate QR Code as SVG and encode to base64
-                $qrContent = $asset->kode_barang . '-' . $asset->nup;
+                $qrContent = route('public.asset.show', ['kode' => $asset->kode_barang, 'nup' => $asset->nup]);
                 $qr = base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(50)->margin(0)->generate($qrContent));
             @endphp
             <img src="data:image/svg+xml;base64,{{ $qr }}" width="50" height="50">

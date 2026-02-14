@@ -22,6 +22,10 @@ class Dashboard extends BaseDashboard
             StatsOverview::class,
             AssetChart::class,
             AssetConditionWidget::class,
+            \App\Filament\Widgets\MaintenanceDueWidget::class,
+            \App\Filament\Widgets\ProcurementTrendChart::class,
+            \App\Filament\Widgets\RoomInventoryStats::class,
+            \App\Filament\Widgets\MaintenanceCostChart::class,
             LatestMutations::class,
             LatestPeminjaman::class,
         ];

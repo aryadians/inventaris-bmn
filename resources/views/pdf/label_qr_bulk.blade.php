@@ -61,7 +61,10 @@
         
         <div class="qr-code">
             <!-- Generate QR Code SVG (Vector Based, No Imagick Required) -->
-            <img src="data:image/svg+xml;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(70)->generate($asset->kode_barang . '-' . $asset->nup ?? '000')) }}">
+            @php
+                $url = route('public.asset.show', ['kode' => $asset->kode_barang, 'nup' => $asset->nup]);
+            @endphp
+            <img src="data:image/svg+xml;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(70)->generate($url)) }}">
         </div>
 
         <div class="item-name">{{ $asset->nama_barang }}</div>

@@ -151,12 +151,23 @@ class AssetResource extends Resource
                                             : '-'),
                                 ]),
                                 Forms\Components\Placeholder::make('qr_preview')
-                                    ->label('QR Code Asset')
+                                    ->label('QR Code Asset (Self-Service)')
                                     ->content(function ($record) {
                                         if (!$record) return 'Simpan dahulu untuk melihat QR';
-                                        $svg = QrCode::format('svg')->size(120)->generate($record->kode_barang . '-' . $record->nup);
+                                        $url = route('public.asset.show', ['kode' => $record->kode_barang, 'nup' => $record->nup]);
+                                        $svg = QrCode::format('svg')->size(120)->generate($url);
                                         return new HtmlString('<div style="background:white; padding:10px; display:inline-block; border:1px solid #ccc; border-radius:8px;">' . $svg . '</div>');
                                     }),
+                            ]),
+
+                        // TAB 4: RIWAYAT HIDUP (TIMELINE)
+                        Forms\Components\Tabs\Tab::make('Riwayat Hidup Aset')
+                            ->icon('heroicon-m-clock')
+                            ->schema([
+                                Forms\Components\ViewField::make('timeline')
+                                    ->view('filament.resources.asset.timeline')
+                                    ->columnSpanFull()
+                                    ->visible(fn ($record) => $record !== null),
                             ]),
                     ])->columnSpanFull(),
             ]);

@@ -31,3 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/api/asset/find/{kode_barang}/{nup}', [AssetApiController::class, 'findByCode'])->name('api.asset.find');
     Route::get('/scan', [ScanController::class, 'index'])->name('scan.index');
 });
+
+// --- PUBLIC SELF-SERVICE ROUTES (No Auth Required for Viewing) ---
+Route::get('/a/{kode}/{nup}', [\App\Http\Controllers\PublicAssetController::class, 'show'])->name('public.asset.show');
+Route::post('/a/report-damage', [\App\Http\Controllers\PublicAssetController::class, 'reportDamage'])->name('public.asset.report');
+Route::post('/a/request-loan', [\App\Http\Controllers\PublicAssetController::class, 'requestLoan'])->name('public.asset.loan');

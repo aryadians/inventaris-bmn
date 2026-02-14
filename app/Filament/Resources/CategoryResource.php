@@ -132,6 +132,12 @@ class CategoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('cetak_laporan')
+                    ->label('Cetak Daftar Aset')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->url(fn (Category $record) => route('laporan.aset.pdf', ['category_id' => $record->id]))
+                    ->openUrlInNewTab(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
