@@ -1,7 +1,52 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@tailwind variants;
-@import '../../../../vendor/filament/filament/resources/css/base.css';
+@import 'tailwindcss';
 
-@config 'tailwind.config.js';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@source '../../../../app/Filament/**/*.php';
+@source '../../../../resources/views/filament/**/*.blade.php';
+@source '../../../../vendor/filament/**/*.blade.php';
+
+/* Custom Theme Overrides for SIMA */
+
+/* Login Page Background */
+.fi-login-page {
+    background-image: linear-gradient(135deg, #0f172a 0%, #1e293b 100%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Sidebar Styling */
+.fi-sidebar-nav {
+    @apply space-y-1;
+}
+
+.fi-sidebar-item-button {
+    @apply rounded-lg transition-all duration-200 hover:bg-white/5;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-button {
+    @apply bg-blue-900/20 text-blue-400 font-semibold shadow-inner ring-1 ring-white/5;
+}
+
+/* Card Styling */
+.fi-section, .fi-widget {
+    @apply rounded-xl border border-gray-700/50 shadow-sm transition-all hover:shadow-md bg-gray-900/50 backdrop-blur-sm;
+}
+
+/* Table Enhancements */
+.fi-ta-header-cell {
+    @apply font-bold text-gray-400 uppercase tracking-wider text-xs;
+}
+
+.fi-ta-row:hover {
+    @apply bg-white/5 transition-colors;
+}
+
+/* Button Refinements */
+.fi-btn {
+    @apply rounded-lg shadow-sm transition-transform active:scale-95;
+}
+
+/* Form Inputs */
+.fi-input, .fi-select-input {
+    @apply rounded-lg border-gray-600 bg-gray-800/50 focus:ring-2 focus:ring-blue-500/50;
+}

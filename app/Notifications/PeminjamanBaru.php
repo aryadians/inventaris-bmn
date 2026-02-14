@@ -8,6 +8,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+use App\Channels\WhatsAppChannel;
+
 class PeminjamanBaru extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -29,7 +31,20 @@ class PeminjamanBaru extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['mail', 'database', WhatsAppChannel::class];
+    }
+
+    /**
+     * Get the WhatsApp representation of the notification.
+     */
+    public function toWhatsApp(object $notifiable)
+    {
+        return "Halo {$notifiable->name},\n\n" .
+               "Ada permintaan peminjaman baru:\n" .
+               "Aset: {$this->loan->asset->name}\n" .
+               "Peminjam: {$this->loan->user->name}\n" .
+               "Tanggal: {$this->loan->loan_date}\n\n" .
+               "Mohon segera ditinjau via dashboard admin.";
     }
 
     /**
